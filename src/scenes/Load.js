@@ -6,7 +6,7 @@ class Load extends Phaser.Scene {
     preload() {
         this.load.path = './assets/'
 
-        this.load.spritesheet('playerIdle', 'lemonhead_idle.png', {
+        this.load.spritesheet('playerIdle', 'player_idle.png', {
             frameWidth: 120,
             frameHeight: 160
         })

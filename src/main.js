@@ -21,8 +21,12 @@ let config = {
     render: {
         pixelArt: true
     },
-    scene: [ Title, Credit, Load, Play, Boss ]
+    scene: [ Load, Title, Credit, Play, Boss ]
 }
 
 let game = new Phaser.Game(config)
+
+//game variables
+let gameHeight = game.config.height
+let gameWidth = game.config.width
 

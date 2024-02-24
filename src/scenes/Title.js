@@ -4,10 +4,10 @@ class Title extends Phaser.Scene {
     }
 
     create() {
-
+   
     }
 
     update() {
-        
+        this.scene.start('playScene')
     }
 }

@@ -3,10 +3,6 @@ class Credit extends Phaser.Scene {
         super("creditScene")
     }
 
-    preload() {
-
-    }
-
     create() {
 
     }

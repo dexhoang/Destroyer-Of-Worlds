@@ -3,10 +3,6 @@ class Title extends Phaser.Scene {
         super("titleScene")
     }
 
-    preload() {
-
-    }
-
     create() {
 
     }

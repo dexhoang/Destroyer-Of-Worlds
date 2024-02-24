@@ -3,10 +3,6 @@ class Boss extends Phaser.Scene {
         super("bossScene")
     }
 
-    preload() {
-
-    }
-
     create() {
 
     }

@@ -10,8 +10,4 @@ class Load extends Phaser.Scene {
     create() {
 
     }
-
-    update() {
-        
-    }
 }

@@ -3,10 +3,6 @@ class Play extends Phaser.Scene {
         super("playScene")
     }
 
-    preload() {
-
-    }
-
     create() {
 
     }

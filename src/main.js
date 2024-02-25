@@ -30,3 +30,5 @@ let game = new Phaser.Game(config)
 let gameHeight = game.config.height
 let gameWidth = game.config.width
 
+//game keys
+let keySpace, keyC

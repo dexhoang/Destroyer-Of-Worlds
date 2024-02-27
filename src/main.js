@@ -32,3 +32,4 @@ let gameWidth = game.config.width
 
 //game keys
 let keySpace, keyC
+let cursors

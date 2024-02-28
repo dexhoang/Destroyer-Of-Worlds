@@ -6,8 +6,10 @@ class Load extends Phaser.Scene {
     preload() {
         this.load.path = './assets/'
 
+        //title scene
         this.load.image('titleScreen', 'TitleScreen.png')
 
+        //lemonhead
         this.load.spritesheet('playerIdle', 'player_idle.png', {
             frameWidth: 120,
             frameHeight: 160
@@ -17,6 +19,10 @@ class Load extends Phaser.Scene {
             frameWidth: 120,
             frameHeight: 160
         })
+        
+        //load tileset and tilemap json
+        this.load.image('tilesetImage', 'tileset.png')
+        this.load.tilemapTiledJSON('tilemapJSON', 'overworld.json')
     }
 
     create() {

@@ -3,6 +3,10 @@ class Play extends Phaser.Scene {
         super("playScene")
     }
 
+    init() {
+        this.maxJumps = 1
+    }
+
     create() {
         this.player = this.physics.add.sprite(gameWidth/2, gameHeight/2, 'playerIdle', 0).setScale(0.7, 0.7)
         this.player.play('idle')
@@ -35,15 +39,43 @@ class Play extends Phaser.Scene {
         if(cursors.left.isDown) {
             this.player.body.setVelocityX(-200)
             this.player.setFlip(true, false)
-            this.player.play('run', true)
+            this.player.anims.play('run', true)
         } else if(cursors.right.isDown) {
             this.player.body.setVelocityX(200)
             this.player.resetFlip()
-            this.player.play('run', true)
+            this.player.anims.play('run', true)
         } else {
             this.player.body.setVelocityX(0)
-            this.player.play('idle')
+            this.player.anims.play('idle', true)
         }
+
+        this.player.isGrounded = this.player.body.touching.down
+        //checks conditions for jump
+        if(this.player.isGrounded) {
+            this.jump = this.maxJumps
+            this.jumping = false
+            console.log('there is a jump left')
+        }
+
+        this.jump = this.maxJumps
+
+        if(cursors.up.isDown && this.jump > 0) {
+            this.jump = this.maxJumps
+            this.player.body.setVelocityY(-600)
+            this.player.play('jump')
+            this.jump--
+        }
+
+        if(this.physics.overlap(this.player, this.bgLayer)) {
+            console.log('THEYRE TOUCHING')
+        }
+        
+        
+        // if(this.jumping) {
+        //     console.log('jumping')
+        //     this.jump -- 
+        //     this.jumping = false
+        // }
         
     }
 }

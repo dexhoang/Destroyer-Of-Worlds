@@ -10,6 +10,11 @@ class Load extends Phaser.Scene {
         this.load.image('titleScreen', 'TitleScreen.png')
 
         //lemonhead
+        this.load.spritesheet('playerJump', 'player_jump.png', {
+            frameWidth: 120,
+            frameHeight: 160
+        })
+
         this.load.spritesheet('playerIdle', 'player_idle.png', {
             frameWidth: 120,
             frameHeight: 160
@@ -43,6 +48,16 @@ class Load extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('playerRun', {
                 start: 0,
                 end: 3
+            })
+        })
+
+        this.anims.create({
+            key: 'jump',
+            frameRate: 12,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('playerJump', {
+                start: 0,
+                end: 0
             })
         })
 

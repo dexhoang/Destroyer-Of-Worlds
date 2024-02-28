@@ -11,7 +11,7 @@ class Play extends Phaser.Scene {
         //player specifications
         this.player = this.physics.add.sprite(gameWidth/2, gameHeight/2, 'playerIdle', 0).setScale(0.7, 0.7)
         this.player.play('idle')
-        this.player.setGravityY(1000)
+        this.player.setGravityY(1400)
         this.player.body.setSize(60, 123)
         this.player.body.setOffset(30, 22)
         this.player.setCollideWorldBounds(true)

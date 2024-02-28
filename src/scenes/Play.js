@@ -8,11 +8,18 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        //player specifications
         this.player = this.physics.add.sprite(gameWidth/2, gameHeight/2, 'playerIdle', 0).setScale(0.7, 0.7)
         this.player.play('idle')
         this.player.setGravityY(1000)
         this.player.body.setSize(60, 123)
         this.player.body.setOffset(30, 22)
+        this.player.setCollideWorldBounds(true)
+
+        //add enemy
+        this.boss = this.physics.add.sprite(gameWidth/4, gameHeight/2 + 80, 'boss')
+        this.boss.body.setSize(360, 670)
+        this.boss.body.setOffset(30, 60)
 
         //create player keys
         cursors = this.input.keyboard.createCursorKeys()

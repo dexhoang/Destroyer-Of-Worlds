@@ -24,6 +24,9 @@ class Load extends Phaser.Scene {
             frameWidth: 120,
             frameHeight: 160
         })
+
+        //boss
+        this.load.image('boss', 'Boss1.png')
         
         //load tileset and tilemap json
         this.load.image('tilesetImage', 'tileset.png')

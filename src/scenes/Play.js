@@ -49,33 +49,14 @@ class Play extends Phaser.Scene {
             this.player.anims.play('idle', true)
         }
 
-        this.player.isGrounded = this.player.body.touching.down
-        //checks conditions for jump
-        if(this.player.isGrounded) {
-            this.jump = this.maxJumps
-            this.jumping = false
-            console.log('there is a jump left')
+        //checks jump conditions
+        if(!this.player.body.onFloor()) {
+            this.player.anims.play('jump')
         }
 
-        this.jump = this.maxJumps
-
-        if(cursors.up.isDown && this.jump > 0) {
-            this.jump = this.maxJumps
+        if(this.player.body.onFloor() && Phaser.Input.Keyboard.JustDown(cursors.up)) {
             this.player.body.setVelocityY(-600)
-            this.player.play('jump')
-            this.jump--
         }
-
-        if(this.physics.overlap(this.player, this.bgLayer)) {
-            console.log('THEYRE TOUCHING')
-        }
-        
-        
-        // if(this.jumping) {
-        //     console.log('jumping')
-        //     this.jump -- 
-        //     this.jumping = false
-        // }
         
     }
 }

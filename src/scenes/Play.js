@@ -12,6 +12,10 @@ class Play extends Phaser.Scene {
         this.gameStart = false
         this.gameOver = false
 
+        //add background
+        this.sky = this.add.tileSprite(0, 0, 950, 800, 'sky').setOrigin(0, 0)
+        this.sky.fixedToCamera = true
+
         //player specifications
         this.player = this.physics.add.sprite(gameWidth/2, gameHeight/2, 'playerIdle', 0).setScale(0.7, 0.7)
         this.player.play('idle')
@@ -48,6 +52,7 @@ class Play extends Phaser.Scene {
 
         //collision with enemy
         this.physics.add.collider(this.player, this.boss)
+
     }
 
     update() {
@@ -69,10 +74,13 @@ class Play extends Phaser.Scene {
         if(!this.player.body.onFloor()) {
             this.player.anims.play('jump')
         }
-
-        if(this.player.body.onFloor() && Phaser.Input.Keyboard.JustDown(cursors.up)) {
+        //this.player.body.onFloor() && 
+        if(Phaser.Input.Keyboard.JustDown(cursors.up)) {
             this.player.body.setVelocityY(-600)
         }
         
+        this.sky.setPosition.X = this.game.fixedToCamera
+        this.sky.setScrollFactor(0)
+        this.sky.tilePositionX += 4         
     }
 }

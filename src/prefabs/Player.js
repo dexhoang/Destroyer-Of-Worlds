@@ -27,7 +27,6 @@ class IdleState extends State {
     enter(scene, player) {
         player.setVelocity(0)
         player.anims.play('idle')
-        console.log('idle')
     }
     
     execute(scene, player) {
@@ -56,8 +55,6 @@ class IdleState extends State {
 class MoveState extends State {
     execute(scene, player) {
         const { left, right, up, space } = scene.keys
-
-        console.log('run')
 
         // transition to jump
         if(Phaser.Input.Keyboard.JustDown(up)) {
@@ -116,7 +113,6 @@ class JumpState extends State {
 class IdleShootState extends State {
     enter(scene, player) {
         player.anims.play('idleShoot', true)
-        console.log('shoot state')
     }
 
     execute(scene, player) {

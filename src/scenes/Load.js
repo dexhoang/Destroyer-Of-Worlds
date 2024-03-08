@@ -28,6 +28,16 @@ class Load extends Phaser.Scene {
             frameHeight: 160
         })
 
+        this.load.spritesheet('playerIdleShoot', 'player_stand_shoot.png', {
+            frameWidth: 120,
+            frameHeight: 160
+        })
+
+        this.load.spritesheet('playerRunShoot', 'player_run_shoot.png', {
+            frameWidth: 120,
+            frameHeight: 160
+        })
+
         //boss
         this.load.image('boss', 'Boss1.png')
         
@@ -48,6 +58,16 @@ class Load extends Phaser.Scene {
         })
 
         this.anims.create({
+            key: 'idleShoot',
+            frameRate: 6,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('playerIdleShoot', {
+                start: 0,
+                end: 2
+            })
+        })
+
+        this.anims.create({
             key: 'run',
             frameRate: 12,
             repeat: -1,
@@ -56,6 +76,17 @@ class Load extends Phaser.Scene {
                 end: 3
             })
         })
+
+        this.anims.create({
+            key: 'runShoot',
+            frameRate: 12,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('playerRunShoot', {
+                start: 0,
+                end: 3
+            })
+        })
+
 
         this.anims.create({
             key: 'jump',

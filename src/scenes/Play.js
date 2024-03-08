@@ -18,6 +18,9 @@ class Play extends Phaser.Scene {
         this.sky = this.add.tileSprite(0, 0, 950, 800, 'sky').setOrigin(0, 0)
         this.sky.fixedToCamera = true
 
+        //player 
+        this.player = new Player(this, 200, 150, 'playerIdle', 0).setScale(0.7, 0.7)
+
         //add enemy
         this.boss = this.physics.add.sprite(gameWidth/4, gameHeight/2 + 80, 'boss')
         this.boss.body.setSize(360, 670)
@@ -26,7 +29,7 @@ class Play extends Phaser.Scene {
 
 
         //create player keys
-        cursors = this.input.keyboard.createCursorKeys()
+        this.keys = this.input.keyboard.createCursorKeys()
 
         //adding tilemap
         const map = this.add.tilemap('tilemapJSON')
@@ -36,15 +39,7 @@ class Play extends Phaser.Scene {
         //spawn and checkpoints
         this.spawn = map.findObject('Points', (obj) => obj.name === 'spawn1')
 
-        this.point1 = map.findObject('Points', (obj) => obj.name === 'spawn2')
-
-        //player specifications
-        this.player = this.physics.add.sprite(this.spawn.x, this.spawn.y, 'playerIdle', 0).setScale(0.7, 0.7)
-        this.player.play('idle')
-        this.player.setGravityY(1400)
-        this.player.body.setSize(60, 123)
-        this.player.body.setOffset(30, 22)
-        this.player.setCollideWorldBounds(true)     
+        this.point1 = map.findObject('Points', (obj) => obj.name === 'spawn2')   
 
         //collision with map
         bgLayer.setCollisionByProperty({collides: true})
@@ -71,29 +66,8 @@ class Play extends Phaser.Scene {
             this.death = true
         }
 
-        //checks keys for player movement
-        if(cursors.left.isDown) {
-            this.player.body.setVelocityX(-200)
-            this.player.setFlip(true, false)
-            this.player.anims.play('run', true)
-        } else if(cursors.right.isDown) {
-            this.player.body.setVelocityX(200)
-            this.player.resetFlip()
-            this.player.anims.play('run', true)
-            this.sky.tilePositionX += 2.9 
-        } else {
-            this.player.body.setVelocityX(0)
-            this.player.anims.play('idle', true)
-        }
-
-        //checks jump conditions
-        if(!this.player.body.onFloor()) {
-            this.player.anims.play('jump')
-        }
-        //this.player.body.onFloor() && 
-        if(Phaser.Input.Keyboard.JustDown(cursors.up)) {
-            this.player.body.setVelocityY(-600)
-        }
+        //update player FSM
+        this.playerFSM.step()
         
         //sky background config
         this.sky.setPosition.X = this.game.fixedToCamera

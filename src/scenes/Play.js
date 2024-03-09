@@ -14,6 +14,7 @@ class Play extends Phaser.Scene {
         this.death = false
         this.check1 = false
         this.check2 = false
+        this.pDone = false
 
         //add background
         this.sky = this.add.tileSprite(0, 0, 950, 800, 'sky').setOrigin(0, 0)
@@ -37,6 +38,9 @@ class Play extends Phaser.Scene {
         this.spawn = map.findObject('Points', (obj) => obj.name === 'spawn1')
         this.point1 = map.findObject('Points', (obj) => obj.name === 'spawn2')   
         this.point2 = map.findObject('Points', (obj) => obj.name === 'spawn3')
+        this.pEnd = map.findObject('Points', (obj) => obj.name === 'pEnd')
+        this.fightScreen = map.findObject('Points', (obj) => obj.name === 'fightScreen')   
+
 
         //player 
         this.player = new Player(this, this.spawn.x, this.spawn.y, 'playerIdle', 0).setScale(0.7, 0.7)
@@ -91,9 +95,14 @@ class Play extends Phaser.Scene {
         //checkpoint system
         this.physics.add.overlap(this.player, this.point1, () => {
             this.check1 = true
+            console.log('check1')
         })
         this.physics.add.overlap(this.player, this.point2, () => {
             this.check2 = true
+        })
+        this.physics.add.overlap(this.player, this.pEnd, () => {
+            this.pDone = true
+            console.log('done')
         })
 
         //boss player collision
@@ -126,6 +135,11 @@ class Play extends Phaser.Scene {
 
         if (this.gameOver == true) {
             this.scene.start('endScene')
+        }
+
+        if (this.pDone == true) {
+            this.player.setX(this.fightScreen.x)
+            this.player.setY(this.fightScreen.y)
         }
     }
     

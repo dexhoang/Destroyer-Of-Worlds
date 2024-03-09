@@ -19,14 +19,14 @@ class Play extends Phaser.Scene {
         this.sky = this.add.tileSprite(0, 0, 950, 800, 'sky').setOrigin(0, 0)
         this.sky.fixedToCamera = true
 
-        //player 
-        this.player = new Player(this, 200, 150, 'playerIdle', 0).setScale(0.7, 0.7)
+    
 
         //add enemy
-        this.boss = this.physics.add.sprite(gameWidth/4, gameHeight/2 + 80, 'boss')
+        this.boss = this.physics.add.sprite(-200, gameHeight/2 + 80, 'boss')
         this.boss.body.setSize(360, 670)
         this.boss.body.setOffset(30, 60)
         this.boss.body.setImmovable(true)
+        
 
 
         //create player keys
@@ -42,6 +42,9 @@ class Play extends Phaser.Scene {
         this.point1 = map.findObject('Points', (obj) => obj.name === 'spawn2')   
         this.point2 = map.findObject('Points', (obj) => obj.name === 'spawn3')
 
+        //player 
+        this.player = new Player(this, this.spawn.x, this.spawn.y, 'playerIdle', 0).setScale(0.7, 0.7)
+
         //collision with map
         bgLayer.setCollisionByProperty({collides: true})
         this.physics.add.collider(this.player, bgLayer)
@@ -54,7 +57,7 @@ class Play extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
 
         //collision with enemy
-        this.physics.add.collider(this.player, this.boss)
+        //this.physics.add.collider(this.player, this.boss)
 
         //test key
         keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
@@ -64,7 +67,8 @@ class Play extends Phaser.Scene {
     update() {
         //test key
         if (Phaser.Input.Keyboard.JustDown(keyC)) {
-            this.death = true
+            //this.death = true
+            console.log (this.boss.x)
         }
 
         //update player FSM
@@ -83,6 +87,12 @@ class Play extends Phaser.Scene {
             this.check2 = true
         })
 
+        //boss player collision
+        this.physics.add.overlap(this.player, this.boss, () => {
+            this.gameOver = true
+        })
+
+
         //call respawn
         if (this.death == true) {
             if (this.check2 == true) {
@@ -100,6 +110,13 @@ class Play extends Phaser.Scene {
                 this.player.setY(this.spawn.y)
                 this.death = false
             }
+        }
+        if (!this.gameOver) {
+            this.boss.x += 1
+        }
+
+        if (this.gameOver == true) {
+            this.scene.start('endScene')
         }
     }
     

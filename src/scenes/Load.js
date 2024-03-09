@@ -12,6 +12,9 @@ class Load extends Phaser.Scene {
         //background
         this.load.image('sky', 'sky.png')
 
+        //end screen
+        this.load.image('endScreen', 'gameEnd.png')
+
         //lemonhead
         this.load.spritesheet('playerJump', 'player_jump.png', {
             frameWidth: 120,

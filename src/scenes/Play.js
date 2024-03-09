@@ -13,6 +13,7 @@ class Play extends Phaser.Scene {
         this.gameOver = false
         this.death = false
         this.check1 = false
+        this.check2 = false
 
         //add background
         this.sky = this.add.tileSprite(0, 0, 950, 800, 'sky').setOrigin(0, 0)
@@ -38,8 +39,8 @@ class Play extends Phaser.Scene {
 
         //spawn and checkpoints
         this.spawn = map.findObject('Points', (obj) => obj.name === 'spawn1')
-
         this.point1 = map.findObject('Points', (obj) => obj.name === 'spawn2')   
+        this.point2 = map.findObject('Points', (obj) => obj.name === 'spawn3')
 
         //collision with map
         bgLayer.setCollisionByProperty({collides: true})
@@ -78,10 +79,18 @@ class Play extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.point1, () => {
             this.check1 = true
         })
+        this.physics.add.overlap(this.player, this.point2, () => {
+            this.check2 = true
+        })
 
         //call respawn
         if (this.death == true) {
-            if (this.check1 == true) {
+            if (this.check2 == true) {
+                this.player.setX(this.point2.x)
+                this.player.setY(this.point2.y)
+                this.death = false
+            }
+            else if (this.check1 == true) {
                 this.player.setX(this.point1.x)
                 this.player.setY(this.point1.y)
                 this.death = false

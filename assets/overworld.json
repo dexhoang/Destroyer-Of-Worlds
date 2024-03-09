@@ -91,6 +91,18 @@
                  "width":0,
                  "x":2268.9696969697,
                  "y":515.878787878788
+                }, 
+                {
+                 "height":0,
+                 "id":5,
+                 "name":"spawn3",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":5024,
+                 "y":336
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -99,7 +111,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":5,
+ "nextobjectid":6,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

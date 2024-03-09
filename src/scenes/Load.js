@@ -15,6 +15,10 @@ class Load extends Phaser.Scene {
         //end screen
         this.load.image('endScreen', 'gameEnd.png')
 
+        //load sound
+        this.load.audio('bgMusic', 'bgMusic.mp3')
+        this.load.audio('firing', 'firing.wav')
+
         //lemonhead
         this.load.spritesheet('playerJump', 'player_jump.png', {
             frameWidth: 120,

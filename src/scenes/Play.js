@@ -82,10 +82,12 @@ class Play extends Phaser.Scene {
         if(this.player.flipX) {
             this.burger = this.physics.add.sprite(this.player.x - 50, this.player.y, 'burger')
             this.burger.setVelocityX(-500)
+            this.sound.play('firing', {volume: 1})
             this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
         } else {
             this.burger = this.physics.add.sprite(this.player.x + 50, this.player.y, 'burger')
             this.burger.setVelocityX(500)
+            this.sound.play('firing', {volume: 1})
             this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
         }
     }

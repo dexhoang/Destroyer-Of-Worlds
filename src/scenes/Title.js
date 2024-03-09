@@ -10,6 +10,10 @@ class Title extends Phaser.Scene {
         //adding keyboard inputs
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
+
+        //bgMusic
+        this.sound.add('bgMusic', { volume: 0.7, loop: true });
+
     }
 
     update() {

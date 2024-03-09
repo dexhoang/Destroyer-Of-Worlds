@@ -46,6 +46,11 @@ class Load extends Phaser.Scene {
 
         //burger
         this.load.image('burger', 'burger.png')
+
+        this.load.spritesheet('burgerHit', 'burger_hit.png', {
+            frameWidth: 37,
+            frameHeight: 37
+        })
         
         //load tileset and tilemap json
         this.load.image('tilesetImage', 'tileset.png')
@@ -93,7 +98,6 @@ class Load extends Phaser.Scene {
             })
         })
 
-
         this.anims.create({
             key: 'jump',
             frameRate: 12,
@@ -101,6 +105,15 @@ class Load extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('playerJump', {
                 start: 0,
                 end: 0
+            })
+        })
+
+        this.anims.create({
+            key: 'burgerHit',
+            frameRate: 16,
+            frames: this.anims.generateFrameNumbers('burgerHit', {
+                start: 0,
+                end: 4
             })
         })
 

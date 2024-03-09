@@ -65,16 +65,41 @@ class Play extends Phaser.Scene {
         //call shootBurger function when player presses SPACE
         this.keys.space.on('down', this.shootBurger, this)
 
+        //add score text
+        let scoreConfig = {
+            fontFamily: 'sans-serif',
+            fontSize: '35px',
+            align: 'left',
+            color: '#000000'
+        }
+        
+        this.scoreText = this.add.text(950, 650, 'SCORE:', scoreConfig)
+
     }
 
+    //shoots burger, adds collider with burger and boss then calls function destroyBurger
     shootBurger() {
         if(this.player.flipX) {
             this.burger = this.physics.add.sprite(this.player.x - 50, this.player.y, 'burger')
             this.burger.setVelocityX(-500)
+            this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
         } else {
             this.burger = this.physics.add.sprite(this.player.x + 50, this.player.y, 'burger')
             this.burger.setVelocityX(500)
+            this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
         }
+    }
+
+    //destroys burger and plays hit animation
+    destroyBurger(burger, boss) {
+        burger.play('burgerHit', true)
+        burger.once('animationcomplete', () => {
+            burger.destroy()
+        })
+        // boss.setTint(0x757575)
+        // this.time.delayedCall(1000, () => {
+        //     boss.clearTint()
+        // }, null, this)
     }
 
     update() {
@@ -136,6 +161,10 @@ class Play extends Phaser.Scene {
         if (this.gameOver == true) {
             this.scene.start('endScene')
         }
+
+        //moves score along with camera
+        this.scoreText.x = this.cameras.main.scrollX
+        this.scoreText.y = this.cameras.main.scrollY
 
         if (this.pDone == true) {
             this.player.setX(this.fightScreen.x)

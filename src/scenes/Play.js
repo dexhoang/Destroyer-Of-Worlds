@@ -4,7 +4,7 @@ class Play extends Phaser.Scene {
     }
 
     init() {
-        this.maxJumps = 1
+
     }
 
     create() {
@@ -19,16 +19,12 @@ class Play extends Phaser.Scene {
         this.sky = this.add.tileSprite(0, 0, 950, 800, 'sky').setOrigin(0, 0)
         this.sky.fixedToCamera = true
 
-    
-
         //add enemy
         this.boss = this.physics.add.sprite(-200, gameHeight/2 + 80, 'boss')
         this.boss.body.setSize(360, 670)
         this.boss.body.setOffset(30, 60)
         this.boss.body.setImmovable(true)
         
-
-
         //create player keys
         this.keys = this.input.keyboard.createCursorKeys()
 
@@ -62,6 +58,19 @@ class Play extends Phaser.Scene {
         //test key
         keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
 
+        //call shootBurger function when player presses SPACE
+        this.keys.space.on('down', this.shootBurger, this)
+
+    }
+
+    shootBurger() {
+        if(this.player.flipX) {
+            this.burger = this.physics.add.sprite(this.player.x - 50, this.player.y, 'burger')
+            this.burger.setVelocityX(-500)
+        } else {
+            this.burger = this.physics.add.sprite(this.player.x + 50, this.player.y, 'burger')
+            this.burger.setVelocityX(500)
+        }
     }
 
     update() {

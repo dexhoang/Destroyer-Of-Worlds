@@ -43,6 +43,9 @@ class Load extends Phaser.Scene {
 
         //boss
         this.load.image('boss', 'Boss1.png')
+
+        //burger
+        this.load.image('burger', 'burger.png')
         
         //load tileset and tilemap json
         this.load.image('tilesetImage', 'tileset.png')
@@ -66,7 +69,7 @@ class Load extends Phaser.Scene {
             repeat: -1,
             frames: this.anims.generateFrameNumbers('playerIdleShoot', {
                 start: 0,
-                end: 2
+                end: 1
             })
         })
 

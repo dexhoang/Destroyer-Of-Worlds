@@ -19,6 +19,9 @@ class Load extends Phaser.Scene {
         this.load.audio('bgMusic', 'bgMusic.mp3')
         this.load.audio('firing', 'firing.wav')
 
+        //small lemon
+        this.load.image('head', 'miniLemon.png')
+
         //lemonhead
         this.load.spritesheet('playerJump', 'player_jump.png', {
             frameWidth: 120,

@@ -40,7 +40,12 @@ class Play extends Phaser.Scene {
         this.point2 = map.findObject('Points', (obj) => obj.name === 'spawn3')
         this.pEnd = map.findObject('Points', (obj) => obj.name === 'pEnd')
         this.fightScreen = map.findObject('Points', (obj) => obj.name === 'fightScreen')   
-
+        this.zone1 = map.findObject('Points', (obj) => obj.name === 'zone1') 
+        console.log(this.zone1)
+        
+        this.checkpoint1 = this.physics.add.sprite(this.point1.x, this.point1.y, 'head')
+        this.checkpoint2 = this.physics.add.sprite(this.point2.x, this.point2.y, 'head')
+        this.endPoint = this.physics.add.sprite(this.pEnd.x, this.pEnd.y, 'head')
 
         //player 
         this.player = new Player(this, this.spawn.x, this.spawn.y, 'playerIdle', 0).setScale(0.7, 0.7)
@@ -120,16 +125,14 @@ class Play extends Phaser.Scene {
         this.sky.tilePositionX += 1  
 
         //checkpoint system
-        this.physics.add.overlap(this.player, this.point1, () => {
+        this.physics.add.overlap(this.player, this.checkpoint1, () => {
             this.check1 = true
-            console.log('check1')
         })
-        this.physics.add.overlap(this.player, this.point2, () => {
+        this.physics.add.overlap(this.player, this.checkpoint2, () => {
             this.check2 = true
         })
-        this.physics.add.overlap(this.player, this.pEnd, () => {
+        this.physics.add.overlap(this.player, this.endPoint, () => {
             this.pDone = true
-            console.log('done')
         })
 
         //boss player collision
@@ -157,7 +160,18 @@ class Play extends Phaser.Scene {
             }
         }
         if (!this.gameOver) {
-            this.boss.x += 1
+            if (this.player.x - this.boss.x > 500) {
+                this.boss.x += 3
+            }
+            else if (this.player.x - this.boss.x > 300) {
+                this.boss.x += 2
+            }
+            else if (this.player.x - this.boss.x < 100) {
+                this.boss.x += 0.75
+            }
+            else {
+                this.boss.x += 1
+            }
         }
 
         if (this.gameOver == true) {

@@ -12,7 +12,8 @@ class Title extends Phaser.Scene {
         keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
 
         //bgMusic
-        this.sound.add('bgMusic', { volume: 0.7, loop: true });
+        this.sound.add('bgMusic')
+        //this.sound.play('bgMusic', {volume:0.3})
 
     }
 
@@ -20,6 +21,7 @@ class Title extends Phaser.Scene {
         //controls - space to play and C for credits
         if (Phaser.Input.Keyboard.JustDown(keySpace)) {
             this.scene.start('playScene')
+            //this.sound.stopAll()
         }
 
         if (Phaser.Input.Keyboard.JustDown(keyC)) {

@@ -14,11 +14,15 @@ class Play extends Phaser.Scene {
         this.death = false
         this.check1 = false
         this.check2 = false
-        this.pDone = false
+        this.pDone = false 
 
         //add background
         this.sky = this.add.tileSprite(0, 0, 950, 800, 'sky').setOrigin(0, 0)
         this.sky.fixedToCamera = true
+
+        //background music 
+        this.sound.add('playMusic')
+        //this.sound.play('playMusic', {volume: 0.3})
 
         //add enemy
         this.boss = this.physics.add.sprite(-200, gameHeight/2 + 80, 'boss')
@@ -80,19 +84,41 @@ class Play extends Phaser.Scene {
         
         this.scoreText = this.add.text(950, 650, 'SCORE:', scoreConfig)
 
+        //create health/burger bar for player
+        this.playerBar = this.createBar(this.player.x - 50, this.player.y - 100, 100, 20, 0x1A9534)
+        this.burgerBar = this.createBar(this.player.x - 50, this.player.y - 85, 100, 5, 0xf2ca5a)
+
+
+    }
+
+    //function to create bar
+    createBar(x, y, width, height, color) {
+        let bar = this.add.graphics() 
+        bar.lineStyle(width, color, 1)
+        bar.fillStyle(color, 1)
+        bar.fillRect(0, 0, width, height)
+        bar.x = x
+        bar.y = y
+
+        return bar
+    }
+
+    //function to chnage bar value
+    setValue(bar, percent) {
+        bar.scaleX = percent/100
     }
 
     //shoots burger, adds collider with burger and boss then calls function destroyBurger
     shootBurger() {
         if(this.player.flipX) {
             this.burger = this.physics.add.sprite(this.player.x - 50, this.player.y, 'burger')
-            this.burger.setVelocityX(-500)
-            this.sound.play('firing', {volume: 1})
+            this.burger.setVelocityX(-500) 
+            this.sound.play('firing', {volume: 0.3})
             this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
         } else {
             this.burger = this.physics.add.sprite(this.player.x + 50, this.player.y, 'burger')
             this.burger.setVelocityX(500)
-            this.sound.play('firing', {volume: 1})
+            this.sound.play('firing', {volume: 0.3})
             this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
         }
     }
@@ -110,10 +136,20 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        //move bars alongside player
+        this.playerBar.x = this.player.x - 50
+        this.playerBar.y = this.player.y - 100
+
+        this.burgerBar.x = this.player.x - 50
+        this.burgerBar.y = this.player.y - 85
+
         //test key
         if (Phaser.Input.Keyboard.JustDown(keyC)) {
             //this.death = true
-            console.log (this.boss.x)
+            console.log ('BOSS: ' + this.boss.x, this.boss.y)
+            console.log ('PLAYER: ' + this.player.x, this.player.y)
+            console.log ('CHECKPOINT1: ' + this.point1.x, this.point1.y)
+            console.log ('CHECKPOINT2: ' + this.point2.x, this.point2.y)
         }
 
         //update player FSM
@@ -139,6 +175,10 @@ class Play extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.boss, () => {
             this.gameOver = true
         })
+
+        if (this.player.x == 42.666666666667) {
+            console.log('yuh')
+        }
 
 
         //call respawn
@@ -175,6 +215,7 @@ class Play extends Phaser.Scene {
         }
 
         if (this.gameOver == true) {
+            this.sound.stopAll()
             this.scene.start('endScene')
         }
 
@@ -187,5 +228,4 @@ class Play extends Phaser.Scene {
             this.player.setY(this.fightScreen.y)
         }
     }
-    
 }

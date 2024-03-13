@@ -17,6 +17,7 @@ class Load extends Phaser.Scene {
 
         //load sound
         this.load.audio('bgMusic', 'bgMusic.mp3')
+        this.load.audio('playMusic', 'playMusic.mp3')
         this.load.audio('firing', 'firing.wav')
 
         //small lemon
@@ -47,6 +48,8 @@ class Load extends Phaser.Scene {
             frameWidth: 120,
             frameHeight: 160
         })
+
+        this.load.image('miniLemon', 'miniLemon.png')
 
         //boss
         this.load.image('boss', 'Boss1.png')

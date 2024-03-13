@@ -200,13 +200,13 @@ class Play extends Phaser.Scene {
             }
         }
         if (!this.gameOver) {
-            if (this.player.x - this.boss.x > 500) {
+            if (this.player.x - this.boss.x > 600) {
                 this.boss.x += 3
             }
-            else if (this.player.x - this.boss.x > 300) {
+            else if (this.player.x - this.boss.x > 400) {
                 this.boss.x += 2
             }
-            else if (this.player.x - this.boss.x < 100) {
+            else if (this.player.x - this.boss.x < 200) {
                 this.boss.x += 0.75
             }
             else {
@@ -224,8 +224,10 @@ class Play extends Phaser.Scene {
         this.scoreText.y = this.cameras.main.scrollY
 
         if (this.pDone == true) {
-            this.player.setX(this.fightScreen.x)
-            this.player.setY(this.fightScreen.y)
+            // this.player.setX(this.fightScreen.x)
+            // this.player.setY(this.fightScreen.y)
+
+            moveTo(this.player, this.fightScreen.x, this.fightScreen.y,)
         }
     }
 }

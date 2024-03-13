@@ -84,9 +84,11 @@ class Play extends Phaser.Scene {
         
         this.scoreText = this.add.text(950, 650, 'SCORE:', scoreConfig)
 
-        //create health/burger bar for player
+        //create health/burger b1ar for player
         this.playerBar = this.createBar(this.player.x - 50, this.player.y - 100, 100, 20, 0x1A9534)
-        this.burgerBar = this.createBar(this.player.x - 50, this.player.y - 85, 100, 5, 0xf2ca5a)
+        //this.setValue(this.playerBar, 50)
+        this.burgerBar = this.createBar(this.player.x - 50, this.player.y - 80, 100, 5, 0xf2ca5a)
+        //this.setValue(this.burgerBar, 20)
 
 
     }
@@ -122,7 +124,7 @@ class Play extends Phaser.Scene {
             this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
         }
     }
-
+    
     //destroys burger and plays hit animation
     destroyBurger(burger, boss) {
         burger.play('burgerHit', true)
@@ -136,12 +138,19 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        //deplete burger bar
+        if(Phaser.Input.Keyboard.JustDown(this.keys.space)) {
+            console.log('hello')
+            //this.burgerMana -= 10
+            this.setValue(this.burgerBar, 75)
+        }
+
         //move bars alongside player
         this.playerBar.x = this.player.x - 50
         this.playerBar.y = this.player.y - 100
 
         this.burgerBar.x = this.player.x - 50
-        this.burgerBar.y = this.player.y - 85
+        this.burgerBar.y = this.player.y - 80
 
         //test key
         if (Phaser.Input.Keyboard.JustDown(keyC)) {

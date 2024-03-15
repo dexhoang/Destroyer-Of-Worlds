@@ -33,10 +33,11 @@ class IdleState extends State {
         const { left, right, up, space } = scene.keys
 
         // transition to jump
-        if(Phaser.Input.Keyboard.JustDown(up)) {
+        if(Phaser.Input.Keyboard.JustDown(up) && player.body.onFloor()) {
             this.stateMachine.transition('jump')
             return
         }
+
 
         //transition to shoot
         if(space.isDown) {
@@ -57,10 +58,10 @@ class MoveState extends State {
         const { left, right, up, space } = scene.keys
 
         // transition to jump
-        if(Phaser.Input.Keyboard.JustDown(up)) {
+        if(Phaser.Input.Keyboard.JustDown(up) && player.body.onFloor()) {
             this.stateMachine.transition('jump')
             return
-        }
+        }5
 
         // transition to shoot
         if(space.isDown) {
@@ -125,7 +126,7 @@ class IdleShootState extends State {
             this.stateMachine.transition('move')
         } else if(right.isDown) {
             this.stateMachine.transition('move')
-        } else if(Phaser.Input.Keyboard.JustDown(up)) {
+        } else if(Phaser.Input.Keyboard.JustDown(up) && player.body.onFloor()) {
             this.stateMachine.transition('jump')
         }
     }
@@ -140,14 +141,14 @@ class RunShootState extends State {
             player.setVelocityX(-200)
             player.setFlip(true, false)
             player.anims.play('runShoot', true)
-            if(Phaser.Input.Keyboard.JustDown(up)) {
+            if(Phaser.Input.Keyboard.JustDown(up) && player.body.onFloor()) {
                 this.stateMachine.transition('jump')
             }
         } else if(space.isDown && right.isDown) {
             player.setVelocityX(200)
             player.resetFlip()
             player.anims.play('runShoot', true)
-            if(Phaser.Input.Keyboard.JustDown(up)) {
+            if(Phaser.Input.Keyboard.JustDown(up) && player.body.onFloor()) {
                 this.stateMachine.transition('jump')
             }
         } else {

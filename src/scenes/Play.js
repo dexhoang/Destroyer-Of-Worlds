@@ -15,7 +15,7 @@ class Play extends Phaser.Scene {
         this.check1 = false
         this.check2 = false
         this.pDone = false 
-
+        
         //add background
         this.sky = this.add.tileSprite(0, 0, 950, 800, 'sky').setOrigin(0, 0)
         this.sky.fixedToCamera = true

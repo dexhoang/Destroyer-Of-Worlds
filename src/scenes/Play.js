@@ -71,9 +71,6 @@ class Play extends Phaser.Scene {
         //test key
         keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
 
-        //call shootBurger function when player presses SPACE
-        this.keys.space.on('down', this.shootBurger, this)
-
         //add score text
         let scoreConfig = {
             fontFamily: 'sans-serif',
@@ -88,8 +85,15 @@ class Play extends Phaser.Scene {
         this.playerBar = this.createBar(this.player.x - 50, this.player.y - 100, 100, 20, 0x1A9534)
         //this.setValue(this.playerBar, 50)
         this.burgerBar = this.createBar(this.player.x - 50, this.player.y - 80, 100, 5, 0xf2ca5a)
+        this.maxBurgers = 10
+
+        //call shootBurger function when player presses SPACE
+        //this.keys.space.on('down', this.shootBurger, this)
+
         //this.setValue(this.burgerBar, 20)
 
+        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
+        this.timeSince = 0
 
     }
 
@@ -107,7 +111,7 @@ class Play extends Phaser.Scene {
 
     //function to chnage bar value
     setValue(bar, percent) {
-        bar.scaleX = percent/100
+        bar.scaleX = percent/10
     }
 
     //shoots burger, adds collider with burger and boss then calls function destroyBurger
@@ -137,12 +141,34 @@ class Play extends Phaser.Scene {
         // }, null, this)
     }
 
-    update() {
-        //deplete burger bar
-        if(Phaser.Input.Keyboard.JustDown(this.keys.space)) {
-            console.log('hello')
-            //this.burgerMana -= 10
-            this.setValue(this.burgerBar, 75)
+    checkKeyDuration(key) {
+        if(key.isUp) {
+            console.log('key is currently down')
+        } else {
+            console.log('key has been released for ' + key.downDuration + ' milliseconds')
+            return key.duration
+        }
+    }
+
+    update(time, delta) {
+        //deplete burger bar and play shoot animation
+        if(Phaser.Input.Keyboard.JustDown(this.keys.space) && this.maxBurgers > 0) {
+            //console.log(this.maxBurgers)
+            this.maxBurgers --
+            this.shootBurger()
+            this.setValue(this.burgerBar, this.maxBurgers)
+        }
+
+        //checks if player has less than 10 burger, then reloads burgers every 1.5 seconds
+        if(this.maxBurgers < 10) {
+            this.timeSince += delta
+            while(this.timeSince >= 1500) {
+                this.maxBurgers ++
+                this.setValue(this.burgerBar, this.maxBurgers)
+                this.timeSince = 0
+            }
+        } else {
+            this.timeSince = 0
         }
 
         //move bars alongside player
@@ -185,11 +211,6 @@ class Play extends Phaser.Scene {
             this.gameOver = true
         })
 
-        if (this.player.x == 42.666666666667) {
-            console.log('yuh')
-        }
-
-
         //call respawn
         if (this.death == true) {
             if (this.check2 == true) {
@@ -223,6 +244,7 @@ class Play extends Phaser.Scene {
             }
         }
 
+        //plays game over screen
         if (this.gameOver == true) {
             this.sound.stopAll()
             this.scene.start('endScene')

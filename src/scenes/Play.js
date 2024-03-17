@@ -83,71 +83,13 @@ class Play extends Phaser.Scene {
 
         //create health/burger b1ar for player
         this.playerBar = this.createBar(this.player.x - 50, this.player.y - 100, 100, 20, 0x1A9534)
-        //this.setValue(this.playerBar, 50)
+
         this.burgerBar = this.createBar(this.player.x - 50, this.player.y - 80, 100, 5, 0xf2ca5a)
         this.maxBurgers = 10
 
-        //call shootBurger function when player presses SPACE
-        //this.keys.space.on('down', this.shootBurger, this)
-
-        //this.setValue(this.burgerBar, 20)
-
-        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
+        //sets time for burger reload
         this.timeSince = 0
 
-    }
-
-    //function to create bar
-    createBar(x, y, width, height, color) {
-        let bar = this.add.graphics() 
-        bar.lineStyle(width, color, 1)
-        bar.fillStyle(color, 1)
-        bar.fillRect(0, 0, width, height)
-        bar.x = x
-        bar.y = y
-
-        return bar
-    }
-
-    //function to chnage bar value
-    setValue(bar, percent) {
-        bar.scaleX = percent/10
-    }
-
-    //shoots burger, adds collider with burger and boss then calls function destroyBurger
-    shootBurger() {
-        if(this.player.flipX) {
-            this.burger = this.physics.add.sprite(this.player.x - 50, this.player.y, 'burger')
-            this.burger.setVelocityX(-500) 
-            this.sound.play('firing', {volume: 0.3})
-            this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
-        } else {
-            this.burger = this.physics.add.sprite(this.player.x + 50, this.player.y, 'burger')
-            this.burger.setVelocityX(500)
-            this.sound.play('firing', {volume: 0.3})
-            this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
-        }
-    }
-    
-    //destroys burger and plays hit animation
-    destroyBurger(burger, boss) {
-        burger.play('burgerHit', true)
-        burger.once('animationcomplete', () => {
-            burger.destroy()
-        })
-        // boss.setTint(0x757575)
-        // this.time.delayedCall(1000, () => {
-        //     boss.clearTint()
-        // }, null, this)
-    }
-
-    checkKeyDuration(key) {
-        if(key.isUp) {
-            console.log('key is currently down')
-        } else {
-            console.log('key has been released for ' + key.downDuration + ' milliseconds')
-            return key.duration
-        }
     }
 
     update(time, delta) {
@@ -260,5 +202,45 @@ class Play extends Phaser.Scene {
 
             moveTo(this.player, this.fightScreen.x, this.fightScreen.y,)
         }
+    }
+
+    //function to create bar
+    createBar(x, y, width, height, color) {
+        let bar = this.add.graphics() 
+        bar.lineStyle(width, color, 1)
+        bar.fillStyle(color, 1)
+        bar.fillRect(0, 0, width, height)
+        bar.x = x
+        bar.y = y
+
+        return bar
+    }
+
+    //function to chnage bar value
+    setValue(bar, percent) {
+        bar.scaleX = percent/10
+    }
+
+    //shoots burger, adds collider with burger and boss then calls function destroyBurger
+    shootBurger() {
+        if(this.player.flipX) {
+            this.burger = this.physics.add.sprite(this.player.x - 50, this.player.y, 'burger')
+            this.burger.setVelocityX(-500) 
+            this.sound.play('firing', {volume: 0.3})
+            this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
+        } else {
+            this.burger = this.physics.add.sprite(this.player.x + 50, this.player.y, 'burger')
+            this.burger.setVelocityX(500)
+            this.sound.play('firing', {volume: 0.3})
+            this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
+        }
+    }
+    
+    //destroys burger and plays hit animation
+    destroyBurger(burger, boss) {
+        burger.play('burgerHit', true)
+        burger.once('animationcomplete', () => {
+            burger.destroy()
+        })
     }
 }

@@ -28,7 +28,7 @@ class Load extends Phaser.Scene {
 
         //small lemon
         this.load.image('head', 'miniLemon.png')
-        this.load.image('5x5', '5x5_white.png')
+        this.load.image('burgerParticle', 'burger_particle.png')
 
         //lemonhead
         this.load.spritesheet('playerJump', 'player_jump.png', {
@@ -63,6 +63,7 @@ class Load extends Phaser.Scene {
 
         //burger
         this.load.image('burger', 'burger.png')
+        this.load.image('burgerEffect', 'burger_effect.png')
 
         this.load.spritesheet('burgerHit', 'burger_hit.png', {
             frameWidth: 37,

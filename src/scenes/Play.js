@@ -91,12 +91,21 @@ class Play extends Phaser.Scene {
         //sets time for burger reload
         this.timeSince = 0
 
+        // this.emitter = this.add.particles(0, 0, '5x5', {
+        //     speed: 10,
+        //     gravityX: -100,
+        //     tint: [ 0x00BBFF, 0x75DAFF, 0xD2F3FF ],
+        //     scale: 1.5,
+        //     blendMode: 'ADD'
+        // })
+
+        // this.emitter.startFollow(this.player, 0, 0, false)
+
     }
 
     update(time, delta) {
         //deplete burger bar and play shoot animation
         if(Phaser.Input.Keyboard.JustDown(this.keys.space) && this.maxBurgers > 0) {
-            //console.log(this.maxBurgers)
             this.maxBurgers --
             this.shootBurger()
             this.setValue(this.burgerBar, this.maxBurgers)
@@ -237,15 +246,47 @@ class Play extends Phaser.Scene {
     //shoots burger, adds collider with burger and boss then calls function destroyBurger
     shootBurger() {
         if(this.player.flipX) {
+            //add following particle trail to burger
+            // this.emitter = this.add.particles(0, 0, 'burgerParticle', {
+            //     speed: 100,
+            //     angle: { min: -35, max: 35 },
+            //     tint: [ 0xf02dcc, 0xed3863, 0xce24a7, 0xdc98a7 ],
+            //     scale: 1,
+            //     lifespan: 300
+            // })
+
+            //add moving burger
             this.burger = this.physics.add.sprite(this.player.x - 50, this.player.y, 'burger')
+            this.burgerEffect = this.physics.add.sprite(this.player.x - 50, this.player.y, 'burgerEffect')
+            this.burgerEffect.setFlip(true)
             this.burger.setVelocityX(-500) 
+            this.burgerEffect.setVelocityX(-500)
+            //this.emitter.startFollow(this.burger, -30, 0, false)
+
+            //audio cue
             this.sound.play('firing', {volume: 0.3})
+
+            //collide burger with boss and callback to destroy burger
             this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
+            this.physics.add.collider(this.burgerEffect, this.boss, this.destroyEffect)
         } else {
+            // this.emitter = this.add.particles(0, 0, 'burgerParticle', {
+            //     speed: 100,
+            //     angle: { min: -35, max: 35 },
+            //     tint: [ 0xf02dcc, 0xed3863, 0xce24a7, 0xdc98a7 ],
+            //     scale: 1,
+            //     lifespan: 300
+            // })
+
             this.burger = this.physics.add.sprite(this.player.x + 50, this.player.y, 'burger')
+            this.burgerEffect = this.physics.add.sprite(this.player.x + 50, this.player.y, 'burgerEffect')
             this.burger.setVelocityX(500)
+            this.burgerEffect.setVelocityX(500)
+            //this.emitter.startFollow(this.burger, 25, 0, false)
+
             this.sound.play('firing', {volume: 0.3})
             this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
+            this.physics.add.collider(this.burgerEffect, this.boss, this.destroyEffect)
         }
     }
     
@@ -255,5 +296,10 @@ class Play extends Phaser.Scene {
         burger.once('animationcomplete', () => {
             burger.destroy()
         })
+    }
+
+    //destroys burger effect
+    destroyEffect(effect, boss) {
+        effect.destroy()
     }
 }

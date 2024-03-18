@@ -30,6 +30,9 @@ class Load extends Phaser.Scene {
         this.load.image('head', 'miniLemon.png')
         this.load.image('burgerParticle', 'burger_particle.png')
 
+        //target
+        this.load.image('target', 'target.png')
+
         //lemonhead
         this.load.spritesheet('playerJump', 'player_jump.png', {
             frameWidth: 120,

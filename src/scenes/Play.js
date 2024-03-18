@@ -100,7 +100,7 @@ class Play extends Phaser.Scene {
         // })
 
         // this.emitter.startFollow(this.player, 0, 0, false)
-
+        
     }
 
     update(time, delta) {

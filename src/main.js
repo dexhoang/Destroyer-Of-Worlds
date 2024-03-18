@@ -25,7 +25,7 @@ let config = {
     render: {
         pixelArt: true
     },
-    scene: [ Load, Title, Credit, Play, Boss, Dead]
+    scene: [ Load, Title, Controls, Credit, Play, Boss, Dead ]
 }
 
 let game = new Phaser.Game(config)

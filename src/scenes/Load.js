@@ -7,7 +7,13 @@ class Load extends Phaser.Scene {
         this.load.path = './assets/'
 
         //title scene
-        this.load.image('titleScreen', 'TitleScreen.png')
+        this.load.image('titleScreen', 'title.png')
+
+        //title option blinker
+        this.load.spritesheet('optionBlinker', 'menu_blinker.png', {
+            frameWidth: 16,
+            frameHeight: 16
+        })
 
         //background
         this.load.image('sky', 'sky.png')
@@ -22,6 +28,7 @@ class Load extends Phaser.Scene {
 
         //small lemon
         this.load.image('head', 'miniLemon.png')
+        this.load.image('5x5', '5x5_white.png')
 
         //lemonhead
         this.load.spritesheet('playerJump', 'player_jump.png', {
@@ -124,6 +131,16 @@ class Load extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('burgerHit', {
                 start: 0,
                 end: 4
+            })
+        })
+
+        this.anims.create({
+            key: 'optionBlinker',
+            frameRate: 3,
+            repeat: -1,
+            frames:this.anims.generateFrameNumbers('optionBlinker', {
+                start: 0,
+                end: 2
             })
         })
 

@@ -44,8 +44,9 @@ class Play extends Phaser.Scene {
         this.point2 = map.findObject('Points', (obj) => obj.name === 'spawn3')
         this.pEnd = map.findObject('Points', (obj) => obj.name === 'pEnd')
         this.fightScreen = map.findObject('Points', (obj) => obj.name === 'fightScreen')   
-        this.zone1 = map.findObject('Points', (obj) => obj.name === 'zone1') 
-        console.log(this.zone1)
+        this.b1 = map.findObject('Points', (obj) => obj.name === 'boss1')
+        this.b2 = map.findObject('Points', (obj) => obj.name === 'boss2')
+
         
         this.checkpoint1 = this.physics.add.sprite(this.point1.x, this.point1.y, 'head')
         this.checkpoint2 = this.physics.add.sprite(this.point2.x, this.point2.y, 'head')
@@ -82,7 +83,7 @@ class Play extends Phaser.Scene {
             color: '#000000'
         }
         
-        this.scoreText = this.add.text(950, 650, 'SCORE:', scoreConfig)
+        this.scoreText = this.add.text(0, 0, 'SCORE:', scoreConfig)
 
         //create health/burger b1ar for player
         this.playerBar = this.createBar(this.player.x - 50, this.player.y - 100, 100, 20, 0x1A9534)
@@ -159,6 +160,8 @@ class Play extends Phaser.Scene {
             console.log ('PLAYER: ' + this.player.x, this.player.y)
             console.log ('CHECKPOINT1: ' + this.point1.x, this.point1.y)
             console.log ('CHECKPOINT2: ' + this.point2.x, this.point2.y)
+            this.player.setX(this.pEnd.x - 100)
+            this.player.setY(this.pEnd.y)
         }
 
         //update player FSM
@@ -208,7 +211,7 @@ class Play extends Phaser.Scene {
                 this.death = false
             }
         }
-        if (!this.gameOver) {
+        if (!this.gameOver && !this.pDone) {
             if (this.player.x - this.boss.x > 600) {
                 this.boss.x += 3
             }
@@ -229,14 +232,24 @@ class Play extends Phaser.Scene {
         }
 
         //moves score along with camera
-        this.scoreText.x = this.cameras.main.scrollX
-        this.scoreText.y = this.cameras.main.scrollY
+        this.scoreText.setScrollFactor(0, 0)
+
 
         if (this.pDone == true) {
-            // this.player.setX(this.fightScreen.x)
-            // this.player.setY(this.fightScreen.y)
-
-            moveTo(this.player, this.fightScreen.x, this.fightScreen.y,)
+            const distance = Phaser.Math.Distance.BetweenPoints(this.player, this.fightScreen)
+            this.physics.moveTo(this.player, this.fightScreen.x, this.fightScreen.y, 200)
+            if (this.player.body.speed > 0) {
+                if (distance < 4) {
+                    this.player.body.reset(this.fightScreen.x, this.fightScreen.y)
+                } 
+            }
+            this.physics.moveTo(this.boss, this.b1.x, this.b1.y, 250)
+            const distance1 = Phaser.Math.Distance.BetweenPoints(this.boss, this.b1)
+            if(this.boss.body.speed > 0) {
+                if (distance1 < 4) {
+                    this.boss.body.reset(this.b1.x, this.b1.y)
+                }
+            }
         }
     }
 }

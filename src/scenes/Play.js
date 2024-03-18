@@ -15,6 +15,8 @@ class Play extends Phaser.Scene {
         this.check1 = false
         this.check2 = false
         this.pDone = false 
+        this.lives = 3
+        this.score = 0
         
         //add background
         this.sky = this.add.tileSprite(0, 0, 950, 800, 'sky').setOrigin(0, 0)
@@ -80,7 +82,13 @@ class Play extends Phaser.Scene {
             color: '#000000'
         }
         
-        this.scoreText = this.add.text(0, 0, 'SCORE:', scoreConfig)
+        this.scoreText = this.add.text(0, 0, 'SCORE:' + this.score, scoreConfig)
+        this.scoreText.setScrollFactor(0)
+
+        //lives
+        this.lifehead = this.physics.add.sprite(860, 20, 'head')
+        this.lifehead.setScrollFactor(0)
+        this.livesLeft = this.add.text(800, 20, 'X' + this.lives, scoreConfig)
 
         //create health/burger b1ar for player
         this.playerBar = this.createBar(this.player.x - 50, this.player.y - 100, 100, 20, 0x1A9534)
@@ -100,7 +108,7 @@ class Play extends Phaser.Scene {
         // })
 
         // this.emitter.startFollow(this.player, 0, 0, false)
-        
+
     }
 
     update(time, delta) {
@@ -167,6 +175,7 @@ class Play extends Phaser.Scene {
 
         //call respawn
         if (this.death == true) {
+            this.livesLeft -= 1
             if (this.check2 == true) {
                 this.player.setX(this.point2.x)
                 this.player.setY(this.point2.y)
@@ -204,9 +213,6 @@ class Play extends Phaser.Scene {
             this.scene.start('endScene')
         }
 
-        //moves score along with camera
-        this.scoreText.setScrollFactor(0, 0)
-
 
         if (this.pDone == true) {
             const distance = Phaser.Math.Distance.BetweenPoints(this.player, this.fightScreen)
@@ -216,11 +222,13 @@ class Play extends Phaser.Scene {
                     this.player.body.reset(this.fightScreen.x, this.fightScreen.y)
                 } 
             }
-            this.physics.moveTo(this.boss, this.b1.x, this.b1.y, 250)
+            this.physics.moveTo(this.boss, this.b1.x, this.b1.y, 550)
             const distance1 = Phaser.Math.Distance.BetweenPoints(this.boss, this.b1)
             if(this.boss.body.speed > 0) {
                 if (distance1 < 4) {
                     this.boss.body.reset(this.b1.x, this.b1.y)
+                    this.hit = this.physics.add.sprite(this.b1.x, this.b1.y, 'target').setScale(3, 3)
+                    this.cameras.main.setZoom(0.75)
                 }
             }
         }

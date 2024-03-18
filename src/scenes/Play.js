@@ -98,17 +98,6 @@ class Play extends Phaser.Scene {
 
         //sets time for burger reload
         this.timeSince = 0
-
-        // this.emitter = this.add.particles(0, 0, '5x5', {
-        //     speed: 10,
-        //     gravityX: -100,
-        //     tint: [ 0x00BBFF, 0x75DAFF, 0xD2F3FF ],
-        //     scale: 1.5,
-        //     blendMode: 'ADD'
-        // })
-
-        // this.emitter.startFollow(this.player, 0, 0, false)
-
     }
 
     update(time, delta) {
@@ -122,7 +111,7 @@ class Play extends Phaser.Scene {
         //checks if player has less than 10 burger, then reloads burgers every 1.5 seconds
         if(this.maxBurgers < 10) {
             this.timeSince += delta
-            while(this.timeSince >= 1500) {
+            while(this.timeSince >= 1000) {
                 this.maxBurgers ++
                 this.setValue(this.burgerBar, this.maxBurgers)
                 this.timeSince = 0
@@ -151,6 +140,7 @@ class Play extends Phaser.Scene {
 
         //update player FSM
         this.playerFSM.step()
+
         
         //sky background config
         this.sky.setPosition.X = this.game.fixedToCamera

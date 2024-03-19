@@ -76,6 +76,8 @@ class Load extends Phaser.Scene {
         //load tileset and tilemap json
         this.load.image('tilesetImage', 'tileset.png')
         this.load.tilemapTiledJSON('tilemapJSON', 'overworld.json')
+
+        this.load.tilemapTiledJSON('tilemapJSON1', 'bossworld.json')
     }
 
     create() {

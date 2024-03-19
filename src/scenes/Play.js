@@ -218,9 +218,9 @@ class Play extends Phaser.Scene {
                 if (distance1 < 4) {
                     this.boss.body.reset(this.b1.x, this.b1.y)
                     this.hit = this.physics.add.sprite(this.b1.x, this.b1.y, 'target').setScale(3, 3)
-                    this.cameras.main.setZoom(0.75)
                 }
             }
+            this.scene.start('bossScene')
         }
     }
 

@@ -15,6 +15,9 @@ class Load extends Phaser.Scene {
             frameHeight: 16
         })
 
+        //cherry
+        this.load.image('cherry', 'cherry.png')
+
         //background
         this.load.image('sky', 'sky.png')
 

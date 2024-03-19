@@ -63,6 +63,11 @@ class Play extends Phaser.Scene {
         this.b1 = map.findObject('Points', (obj) => obj.name === 'boss1')
         this.b2 = map.findObject('Points', (obj) => obj.name === 'boss2')
 
+        this.c1 = map.findObject('Points', (obj) => obj.name === 'c1')
+        this.c2 = map.findObject('Points', (obj) => obj.name === 'c2')
+
+        this.cherry1 = this.physics.add.sprite(this.c1.x, this.c1.y, 'cherry').setScale(0.6, 0.6)
+        this.cherry2 = this.physics.add.sprite(this.c2.x, this.c2.y, 'cherry').setScale(0.6, 0.6)
         
         this.checkpoint1 = this.physics.add.sprite(this.point1.x + 5, this.point1.y + 85, 'redFlag')
         this.checkpoint2 = this.physics.add.sprite(this.point2.x, this.point2.y + 35, 'redFlag')

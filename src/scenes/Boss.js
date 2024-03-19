@@ -11,7 +11,7 @@ class Boss extends Phaser.Scene {
         const tileset = map.addTilesetImage('tileset', 'tilesetImage')
         const bgLayer = map.createLayer('Background', tileset, 0, 1)
         this.cameras.main.setZoom(0.85)
-        //this.cameras.main.setScroll(20, 0)
+        
 
         this.spawn = map.findObject('Points', (obj) => obj.name === 'spawn')
         this.bossSpawn = map.findObject('Points', (obj) => obj.name === 'boss1')
@@ -81,6 +81,8 @@ class Boss extends Phaser.Scene {
 
     update(time, delta) {
         this.playerFSM.step()
+
+        this.sky.tilePositionX += 5
 
         if(Phaser.Input.Keyboard.JustDown(this.keys.space) && this.maxBurgers > 0) {
             this.maxBurgers --

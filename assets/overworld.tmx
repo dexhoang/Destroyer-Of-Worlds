@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="500" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="14">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="500" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="17">
  <editorsettings>
   <export target="overworld.json" format="json"/>
  </editorsettings>
@@ -5783,6 +5783,12 @@
    <point/>
   </object>
   <object id="13" name="cherry" x="2036.36" y="133.333">
+   <point/>
+  </object>
+  <object id="14" name="c1" x="446.667" y="585.333">
+   <point/>
+  </object>
+  <object id="15" name="c2" x="637.333" y="585.33">
    <point/>
   </object>
  </objectgroup>

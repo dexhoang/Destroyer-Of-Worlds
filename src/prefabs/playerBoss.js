@@ -90,7 +90,7 @@ class MoveState extends State {
 
 class JumpState extends State {
     enter(scene, player) {
-        player.setVelocityY(-600)
+        player.setVelocityY(-750)
         player.anims.play('jump')
     }
 

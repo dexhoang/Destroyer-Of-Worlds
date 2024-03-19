@@ -201,6 +201,7 @@ class Play extends Phaser.Scene {
             console.log ('CHECKPOINT1: ' + this.point1.x, this.point1.y)
             console.log ('CHECKPOINT2: ' + this.point2.x, this.point2.y)
             console.log ('SCORE: ' + this.score)
+            this.scene.start('bossScene')
             // this.player.setX(this.pEnd.x - 100)
             // this.player.setY(this.pEnd.y)
         }
@@ -264,20 +265,20 @@ class Play extends Phaser.Scene {
                 this.death = false
             }
         }
-        if (!this.gameOver && !this.pDone) {
-            if (this.player.x - this.boss.x > 600) {
-                this.boss.x += 3
-            }
-            else if (this.player.x - this.boss.x > 400) {
-                this.boss.x += 2
-            }
-            else if (this.player.x - this.boss.x < 200) {
-                this.boss.x += 0.75
-            }
-            else {
-                this.boss.x += 1
-            }
-        }
+        // if (!this.gameOver && !this.pDone) {
+        //     if (this.player.x - this.boss.x > 600) {
+        //         this.boss.x += 3
+        //     }
+        //     else if (this.player.x - this.boss.x > 400) {
+        //         this.boss.x += 2
+        //     }
+        //     else if (this.player.x - this.boss.x < 200) {
+        //         this.boss.x += 0.75
+        //     }
+        //     else {
+        //         this.boss.x += 1
+        //     }
+        // }
 
         //plays game over screen
         if (this.gameOver == true) {

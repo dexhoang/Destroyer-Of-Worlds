@@ -1,4 +1,4 @@
-class Player extends Phaser.Physics.Arcade.Sprite {
+class PlayerParkour extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame)
         scene.add.existing(this)
@@ -13,17 +13,17 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         //initialize state machine
         scene.playerFSM = new StateMachine('idle', {
-            idle: new IdleState(),
-            move: new MoveState(),
-            jump: new JumpState(),
-            idleshoot: new IdleShootState(),
-            runshoot: new RunShootState(),
+            idle: new IdleState1(),
+            move: new MoveState1(),
+            jump: new JumpState1(),
+            idleshoot: new IdleShootState1(),
+            runshoot: new RunShootState1(),
         }, [scene, this])
     }
 }
 
 // idle state
-class IdleState extends State {
+class IdleState1 extends State {
     enter(scene, player) {
         player.setVelocity(0)
         player.anims.play('idle')
@@ -53,7 +53,7 @@ class IdleState extends State {
     }
 }
 
-class MoveState extends State {
+class MoveState1 extends State {
     execute(scene, player) {
         const { left, right, up, space } = scene.keys
 
@@ -88,7 +88,7 @@ class MoveState extends State {
     }
 }
 
-class JumpState extends State {
+class JumpState1 extends State {
     enter(scene, player) {
         player.setVelocityY(-600)
         player.anims.play('jump')
@@ -111,7 +111,7 @@ class JumpState extends State {
     }
 }
 
-class IdleShootState extends State {
+class IdleShootState1 extends State {
     enter(scene, player) {
         player.anims.play('idleShoot', true)
     }
@@ -132,7 +132,7 @@ class IdleShootState extends State {
     }
 }
 
-class RunShootState extends State {
+class RunShootState1 extends State {
     execute(scene, player) {
         const { left, right, up, space } = scene.keys
 

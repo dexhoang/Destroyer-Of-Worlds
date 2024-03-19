@@ -69,7 +69,7 @@ class Play extends Phaser.Scene {
         this.endPoint = this.physics.add.sprite(this.pEnd.x, this.pEnd.y + 32, 'redFlag')
 
         //player 
-        this.player = new Player(this, this.spawn.x, this.spawn.y, 'playerIdle', 0).setScale(0.7, 0.7)
+        this.player = new PlayerParkour(this, this.spawn.x, this.spawn.y, 'playerIdle', 0).setScale(0.7, 0.7)
 
         //collision with map
         bgLayer.setCollisionByProperty({collides: true})

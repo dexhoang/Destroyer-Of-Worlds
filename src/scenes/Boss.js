@@ -22,7 +22,7 @@ class Boss extends Phaser.Scene {
         this.boss.body.setImmovable(true)
 
         this.keys = this.input.keyboard.createCursorKeys()
-        this.player = new Player(this, this.spawn.x, this.spawn.y, 'playerIdle', 0)
+        this.player = new PlayerBoss(this, this.spawn.x, this.spawn.y, 'playerIdle', 0)
         this.player.setCollideWorldBounds(true)
         this.physics.add.collider(this.player, this.boss)
 
@@ -48,6 +48,13 @@ class Boss extends Phaser.Scene {
 
         this.physics.world.bounds.width = 1205
 
+        this.target = this.physics.add.sprite(gameWidth/2 - 300, gameHeight/2 - 20, 'target').setScale(4, 4)
+        this.target2 = this.physics.add.sprite(gameWidth/2 - 230, gameHeight/2 + 135, 'target').setScale(4, 4)
+        this.target2 = this.physics.add.sprite(gameWidth/2 - 220, gameHeight/2 - 165, 'target').setScale(4, 4)
+        // this.target.setVisible(false)
+
+
+
         //'animate' boss movement
         this.bossTween = this.tweens.add({
             targets: this.boss,
@@ -66,6 +73,10 @@ class Boss extends Phaser.Scene {
             yoyo: true,
             repeat: -1
         })
+    }
+
+    toggleVisible () {
+
     }
 
     update(time, delta) {

@@ -82,14 +82,5 @@ class Title extends Phaser.Scene {
             }
         }
 
-        //controls - space to play and C for credits
-        // if (Phaser.Input.Keyboard.JustDown(keySpace)) {
-        //     this.scene.start('playScene')
-        //     //this.sound.stopAll()
-        // }
-
-        // if (Phaser.Input.Keyboard.JustDown(keyC)) {
-        //     this.scene.start('creditScene')
-        // }
     }
 }

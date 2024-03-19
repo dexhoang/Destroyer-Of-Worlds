@@ -141,11 +141,12 @@ class Boss extends Phaser.Scene {
             this.sound.play('firing', {volume: 0.3})
 
             //collide burger with boss and callback to destroy burger
-            this.physics.add.collider(this.burger, this.boss, this.destroyBurger, () => {
-                this.bossHP -= 1
+            this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
+            this.physics.add.collider(this.burgerEffect, this.boss, this.destroyEffect, () => {
+                this.bossHP -= 20
+                console.log(this.bossHP)
                 this.setValue(this.bossBar, this.bossHP, 1000)
             })
-            this.physics.add.collider(this.burgerEffect, this.boss, this.destroyEffect)
         } else {
             this.burger = this.physics.add.sprite(this.player.x + 50, this.player.y, 'burger')
             this.burgerEffect = this.physics.add.sprite(this.player.x + 50, this.player.y, 'burgerEffect')
@@ -153,11 +154,12 @@ class Boss extends Phaser.Scene {
             this.burgerEffect.setVelocityX(500)
 
             this.sound.play('firing', {volume: 0.3})
-            this.physics.add.collider(this.burger, this.boss, this.destroyBurger, () => {
-                this.bossHP -= 1
+            this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
+            this.physics.add.collider(this.burgerEffect, this.boss, this.destroyEffect, () => {
+                this.bossHP -= 20
+                console.log(this.bossHP)
                 this.setValue(this.bossBar, this.bossHP, 1000)
             })
-            this.physics.add.collider(this.burgerEffect, this.boss, this.destroyEffect)
         }
     }
     

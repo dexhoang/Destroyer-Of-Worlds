@@ -28,9 +28,14 @@ class Boss extends Phaser.Scene {
 
         //create health/burger b1ar for player
         this.playerBar = this.createBar(this.player.x - 50, this.player.y - 100, 100, 20, 0x1A9534)
+        this.playerHP = 100
 
         this.burgerBar = this.createBar(this.player.x - 50, this.player.y - 80, 100, 5, 0xf2ca5a)
         this.maxBurgers = 10
+
+        //boss health bar
+        this.bossBar = this.createBar(this.boss.x - 100, this.boss.y - 315, 360, 40, 0x7A1800)
+        this.bossHP = 1000
 
         //sets time for burger reload
         this.timeSince = 0
@@ -43,9 +48,19 @@ class Boss extends Phaser.Scene {
 
         this.physics.world.bounds.width = 1205
 
+        //'animate' boss movement
         this.bossTween = this.tweens.add({
             targets: this.boss,
             y: this.boss.y - 30,
+            duration: 500,
+            ease: 'Linear',
+            yoyo: true,
+            repeat: -1
+        })
+
+        this.bossBarTween = this.tweens.add({
+            targets: this.bossBar,
+            y: this.bossBar.y - 15,
             duration: 500,
             ease: 'Linear',
             yoyo: true,
@@ -59,7 +74,7 @@ class Boss extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(this.keys.space) && this.maxBurgers > 0) {
             this.maxBurgers --
             this.shootBurger()
-            this.setValue(this.burgerBar, this.maxBurgers)
+            this.setValue(this.burgerBar, this.maxBurgers, 10)
         }
 
         //checks if player has less than 10 burger, then reloads burgers every 1.5 seconds
@@ -67,7 +82,7 @@ class Boss extends Phaser.Scene {
             this.timeSince += delta
             while(this.timeSince >= 1000) {
                 this.maxBurgers ++
-                this.setValue(this.burgerBar, this.maxBurgers)
+                this.setValue(this.burgerBar, this.maxBurgers, 10)
                 this.timeSince = 0
             }
         } else {
@@ -95,8 +110,8 @@ class Boss extends Phaser.Scene {
     }
 
     //function to chnage bar value
-    setValue(bar, percent) {
-        bar.scaleX = percent/10
+    setValue(bar, percent, total) {
+        bar.scaleX = percent/total
     }
 
     //shoots burger, adds collider with burger and boss then calls function destroyBurger
@@ -113,7 +128,10 @@ class Boss extends Phaser.Scene {
             this.sound.play('firing', {volume: 0.3})
 
             //collide burger with boss and callback to destroy burger
-            this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
+            this.physics.add.collider(this.burger, this.boss, this.destroyBurger, () => {
+                this.bossHP -= 1
+                this.setValue(this.bossBar, this.bossHP, 1000)
+            })
             this.physics.add.collider(this.burgerEffect, this.boss, this.destroyEffect)
         } else {
             this.burger = this.physics.add.sprite(this.player.x + 50, this.player.y, 'burger')
@@ -122,7 +140,10 @@ class Boss extends Phaser.Scene {
             this.burgerEffect.setVelocityX(500)
 
             this.sound.play('firing', {volume: 0.3})
-            this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
+            this.physics.add.collider(this.burger, this.boss, this.destroyBurger, () => {
+                this.bossHP -= 1
+                this.setValue(this.bossBar, this.bossHP, 1000)
+            })
             this.physics.add.collider(this.burgerEffect, this.boss, this.destroyEffect)
         }
     }

@@ -251,7 +251,7 @@ class Play extends Phaser.Scene {
         if (this.death == true) {
             if (this.check2 == true) {
                 this.player.setX(this.point2.x)
-                this.player.setY(this.point2.y)
+                this.player.setY(this.point2.y - 20)
                 this.death = false
             }
             else if (this.check1 == true) {

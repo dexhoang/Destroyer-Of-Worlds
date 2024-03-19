@@ -183,17 +183,17 @@ class Play extends Phaser.Scene {
             }
         }
         if (!this.gameOver && !this.pDone) {
-            if (this.player.x - this.boss.x > 600) {
-                this.boss.x += 3
-            }
-            else if (this.player.x - this.boss.x > 400) {
+            if (this.player.x - this.boss.x > 700) {
                 this.boss.x += 2
             }
-            else if (this.player.x - this.boss.x < 200) {
-                this.boss.x += 0.75
+            else if (this.player.x - this.boss.x > 500) {
+                this.boss.x += 1
+            }
+            else if (this.player.x - this.boss.x < 300) {
+                this.boss.x += 0.25
             }
             else {
-                this.boss.x += 1
+                this.boss.x += 0.5
             }
         }
 

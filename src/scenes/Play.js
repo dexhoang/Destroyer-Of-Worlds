@@ -31,6 +31,20 @@ class Play extends Phaser.Scene {
         this.boss.body.setSize(360, 670)
         this.boss.body.setOffset(30, 60)
         this.boss.body.setImmovable(true)
+
+        this.bossTints = [0xffffff, 0x808080]
+        this.originalTint = this.boss.tint
+        this.grayTint = 0x808080
+
+        this.bossTween = this.tweens.add({
+            targets: this.boss,
+            duration: 4000,
+            yoyo: true,
+            onStart: this.boss.setTint(0x808080),  
+            onYoyo: this.boss.setTint(0xffffff),
+        })
+
+        // this.boss.setTint(0x808080)
         
         //create player keys
         this.keys = this.input.keyboard.createCursorKeys()
@@ -50,9 +64,9 @@ class Play extends Phaser.Scene {
         this.b2 = map.findObject('Points', (obj) => obj.name === 'boss2')
 
         
-        this.checkpoint1 = this.physics.add.sprite(this.point1.x, this.point1.y, 'head')
-        this.checkpoint2 = this.physics.add.sprite(this.point2.x, this.point2.y, 'head')
-        this.endPoint = this.physics.add.sprite(this.pEnd.x, this.pEnd.y, 'head')
+        this.checkpoint1 = this.physics.add.sprite(this.point1.x + 5, this.point1.y + 85, 'redFlag')
+        this.checkpoint2 = this.physics.add.sprite(this.point2.x, this.point2.y + 35, 'redFlag')
+        this.endPoint = this.physics.add.sprite(this.pEnd.x, this.pEnd.y + 32, 'redFlag')
 
         //player 
         this.player = new Player(this, this.spawn.x, this.spawn.y, 'playerIdle', 0).setScale(0.7, 0.7)
@@ -61,12 +75,60 @@ class Play extends Phaser.Scene {
         bgLayer.setCollisionByProperty({collides: true})
         this.physics.add.collider(this.player, bgLayer)
 
+        //checks for player/checkpoint overlap -> changes flag sprite and plays sound indicator
+        this.checkOneSound = false
+        this.checkTwoSound = false
+        this.endPointSound = false
+
+        this.emitter = this.add.particles(0, 0, '5x5', {
+            speed: 150,
+            tint: [ 0xFFF800, 0xFFFFFF, 0xFFDB00 ],
+            scale: 1,
+            lifespan: 300
+        })
+
+        this.physics.add.overlap(this.player, this.checkpoint1, () => {
+            if (this.checkOneSound == false) {
+                this.sound.play('checkpointPing')
+                this.checkpoint1.setTexture('greenFlag')
+                this.checkOneSound = true
+                
+                this.emitter.setPosition(this.checkpoint1.x, this.checkpoint1.y)
+                this.emitter.explode(20)
+            }
+        })
+
+        this.physics.add.overlap(this.player, this.checkpoint2, () => {
+            if (this.checkTwoSound == false) {
+                this.sound.play('checkpointPing')
+                this.checkpoint2.setTexture('greenFlag')
+                this.checkTwoSound = true
+
+                this.emitter.setPosition(this.checkpoint2.x, this.checkpoint2.y)
+                this.emitter.explode(20)
+            }
+        })
+
+        this.physics.add.overlap(this.player, this.endPoint, () => {
+            if (this.endPointSound == false) {
+                this.sound.play('checkpointPing')
+                this.endPoint.setTexture('greenFlag')
+                this.endPointSound = true
+
+                this.emitter.setPosition(this.endPoint.x, this.endPoint.y)
+                this.emitter.explode(20)
+            }
+        })
+
         //handle camera
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
         this.cameras.main.startFollow(this.player, true, 0.25, 0.25)
 
         //handle world bounds
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
+
+        // this.fireball = this.physics.add.sprite(this.player.x, this.player.y, 'fireball').setScale(3, 3)
+        // this.fireball.setSize(36, 8)
 
         //collision with enemy
         //this.physics.add.collider(this.player, this.boss)
@@ -81,14 +143,15 @@ class Play extends Phaser.Scene {
             align: 'left',
             color: '#000000'
         }
-        
+
         this.scoreText = this.add.text(0, 0, 'SCORE:' + this.score, scoreConfig)
         this.scoreText.setScrollFactor(0)
 
         //lives
-        this.lifehead = this.physics.add.sprite(860, 20, 'head')
+        this.lifehead = this.physics.add.sprite(858, 28, 'head')
         this.lifehead.setScrollFactor(0)
-        this.livesLeft = this.add.text(800, 20, 'X' + this.lives, scoreConfig)
+        this.livesLeft = this.add.text(885, 10, 'x ' + this.lives, scoreConfig)
+        this.livesLeft.setScrollFactor(0)
 
         //create health/burger b1ar for player
         this.playerBar = this.createBar(this.player.x - 50, this.player.y - 100, 100, 20, 0x1A9534)
@@ -98,6 +161,9 @@ class Play extends Phaser.Scene {
 
         //sets time for burger reload
         this.timeSince = 0
+
+        
+
     }
 
     update(time, delta) {
@@ -134,14 +200,15 @@ class Play extends Phaser.Scene {
             console.log ('PLAYER: ' + this.player.x, this.player.y)
             console.log ('CHECKPOINT1: ' + this.point1.x, this.point1.y)
             console.log ('CHECKPOINT2: ' + this.point2.x, this.point2.y)
-            this.player.setX(this.pEnd.x - 100)
-            this.player.setY(this.pEnd.y)
+            console.log ('SCORE: ' + this.score)
+            this.scene.start('bossScene')
+            // this.player.setX(this.pEnd.x - 100)
+            // this.player.setY(this.pEnd.y)
         }
 
         //update player FSM
         this.playerFSM.step()
 
-        
         //sky background config
         this.sky.setPosition.X = this.game.fixedToCamera
         this.sky.setScrollFactor(0)
@@ -163,9 +230,25 @@ class Play extends Phaser.Scene {
             this.gameOver = true
         })
 
+        //prevents player from spawning behind enemy -> immediate game over
+        if (this.player.x < this.boss.x) {
+            this.gameOver = true
+        }
+
+        //check if player hits ground -> calls respawn & changes number of lives
+        if (this.player.y > 754.5) {
+            this.death = true
+            this.lives -= 1
+            this.livesLeft.setText('x ' + this.lives)
+        }
+
+        //checks remaining lives
+        if (this.lives == 0) {
+            this.gameOver = true
+        }
+
         //call respawn
         if (this.death == true) {
-            this.livesLeft -= 1
             if (this.check2 == true) {
                 this.player.setX(this.point2.x)
                 this.player.setY(this.point2.y)
@@ -265,7 +348,10 @@ class Play extends Phaser.Scene {
             this.sound.play('firing', {volume: 0.3})
 
             //collide burger with boss and callback to destroy burger
-            this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
+            this.physics.add.collider(this.burger, this.boss, this.destroyBurger, () => {
+                this.score += 10
+                this.scoreText.setText('Score: ' + this.score)
+            })
             this.physics.add.collider(this.burgerEffect, this.boss, this.destroyEffect)
         } else {
             // this.emitter = this.add.particles(0, 0, 'burgerParticle', {
@@ -283,7 +369,10 @@ class Play extends Phaser.Scene {
             //this.emitter.startFollow(this.burger, 25, 0, false)
 
             this.sound.play('firing', {volume: 0.3})
-            this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
+            this.physics.add.collider(this.burger, this.boss, this.destroyBurger, () => {
+                this.score += 10
+                this.scoreText.setText('Score: ' + this.score)
+            })
             this.physics.add.collider(this.burgerEffect, this.boss, this.destroyEffect)
         }
     }
@@ -299,5 +388,9 @@ class Play extends Phaser.Scene {
     //destroys burger effect
     destroyEffect(effect, boss) {
         effect.destroy()
+    }
+
+    checkpointPing() {
+        this.sound.play('checkpointPing')
     }
 }

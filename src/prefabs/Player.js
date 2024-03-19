@@ -9,7 +9,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.body.setGravityY(1400)
         this.body.setSize(60, 123)
         this.body.setOffset(30, 22)
-        this.body.setCollideWorldBounds(true)
+        this.body.setCollideWorldBounds(false)
 
         //initialize state machine
         scene.playerFSM = new StateMachine('idle', {

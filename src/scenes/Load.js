@@ -24,7 +24,8 @@ class Load extends Phaser.Scene {
         //load sound
         this.load.audio('bgMusic', 'bgMusic.mp3')
         this.load.audio('playMusic', 'playMusic.mp3')
-        this.load.audio('firing', 'firing.wav')
+        this.load.audio('firing', 'firing2.wav')
+        this.load.audio('checkpointPing', 'checkpoint_ping.wav')
 
         //small lemon
         this.load.image('head', 'miniLemon.png')
@@ -32,6 +33,11 @@ class Load extends Phaser.Scene {
 
         //target
         this.load.image('target', 'target.png')
+
+        //checkpoint flag
+        this.load.image('redFlag', 'red_flag.png')
+        this.load.image('greenFlag', 'green_flag.png')
+        this.load.image('5x5', '5x5_white.png')
 
         //lemonhead
         this.load.spritesheet('playerJump', 'player_jump.png', {
@@ -72,6 +78,9 @@ class Load extends Phaser.Scene {
             frameWidth: 37,
             frameHeight: 37
         })
+
+        //fireball for boss
+        this.load.image('fireball', 'fireball.png')
         
         //load tileset and tilemap json
         this.load.image('tilesetImage', 'tileset.png')

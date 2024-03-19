@@ -127,12 +127,6 @@ class Play extends Phaser.Scene {
         //handle world bounds
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
 
-        // this.fireball = this.physics.add.sprite(this.player.x, this.player.y, 'fireball').setScale(3, 3)
-        // this.fireball.setSize(36, 8)
-
-        //collision with enemy
-        //this.physics.add.collider(this.player, this.boss)
-
         //test key
         keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
 
@@ -152,47 +146,9 @@ class Play extends Phaser.Scene {
         this.lifehead.setScrollFactor(0)
         this.livesLeft = this.add.text(885, 10, 'x ' + this.lives, scoreConfig)
         this.livesLeft.setScrollFactor(0)
-
-        //create health/burger b1ar for player
-        this.playerBar = this.createBar(this.player.x - 50, this.player.y - 100, 100, 20, 0x1A9534)
-
-        this.burgerBar = this.createBar(this.player.x - 50, this.player.y - 80, 100, 5, 0xf2ca5a)
-        this.maxBurgers = 10
-
-        //sets time for burger reload
-        this.timeSince = 0
-
-        
-
     }
 
     update(time, delta) {
-        //deplete burger bar and play shoot animation
-        if(Phaser.Input.Keyboard.JustDown(this.keys.space) && this.maxBurgers > 0) {
-            this.maxBurgers --
-            this.shootBurger()
-            this.setValue(this.burgerBar, this.maxBurgers)
-        }
-
-        //checks if player has less than 10 burger, then reloads burgers every 1.5 seconds
-        if(this.maxBurgers < 10) {
-            this.timeSince += delta
-            while(this.timeSince >= 1000) {
-                this.maxBurgers ++
-                this.setValue(this.burgerBar, this.maxBurgers)
-                this.timeSince = 0
-            }
-        } else {
-            this.timeSince = 0
-        }
-
-        //move bars alongside player
-        this.playerBar.x = this.player.x - 50
-        this.playerBar.y = this.player.y - 100
-
-        this.burgerBar.x = this.player.x - 50
-        this.burgerBar.y = this.player.y - 80
-
         //test key
         if (Phaser.Input.Keyboard.JustDown(keyC)) {
             //this.death = true
@@ -306,90 +262,6 @@ class Play extends Phaser.Scene {
             this.scene.start('bossScene')
         }
     }
-
-    //function to create bar
-    createBar(x, y, width, height, color) {
-        let bar = this.add.graphics() 
-        bar.lineStyle(width, color, 1)
-        bar.fillStyle(color, 1)
-        bar.fillRect(0, 0, width, height)
-        bar.x = x
-        bar.y = y
-
-        return bar
-    }
-
-    //function to chnage bar value
-    setValue(bar, percent) {
-        bar.scaleX = percent/10
-    }
-
-    //shoots burger, adds collider with burger and boss then calls function destroyBurger
-    shootBurger() {
-        if(this.player.flipX) {
-            //add following particle trail to burger
-            // this.emitter = this.add.particles(0, 0, 'burgerParticle', {
-            //     speed: 100,
-            //     angle: { min: -35, max: 35 },
-            //     tint: [ 0xf02dcc, 0xed3863, 0xce24a7, 0xdc98a7 ],
-            //     scale: 1,
-            //     lifespan: 300
-            // })
-
-            //add moving burger
-            this.burger = this.physics.add.sprite(this.player.x - 50, this.player.y, 'burger')
-            this.burgerEffect = this.physics.add.sprite(this.player.x - 50, this.player.y, 'burgerEffect')
-            this.burgerEffect.setFlip(true)
-            this.burger.setVelocityX(-500) 
-            this.burgerEffect.setVelocityX(-500)
-            //this.emitter.startFollow(this.burger, -30, 0, false)
-
-            //audio cue
-            this.sound.play('firing', {volume: 0.3})
-
-            //collide burger with boss and callback to destroy burger
-            this.physics.add.collider(this.burger, this.boss, this.destroyBurger, () => {
-                this.score += 10
-                this.scoreText.setText('Score: ' + this.score)
-            })
-            this.physics.add.collider(this.burgerEffect, this.boss, this.destroyEffect)
-        } else {
-            // this.emitter = this.add.particles(0, 0, 'burgerParticle', {
-            //     speed: 100,
-            //     angle: { min: -35, max: 35 },
-            //     tint: [ 0xf02dcc, 0xed3863, 0xce24a7, 0xdc98a7 ],
-            //     scale: 1,
-            //     lifespan: 300
-            // })
-
-            this.burger = this.physics.add.sprite(this.player.x + 50, this.player.y, 'burger')
-            this.burgerEffect = this.physics.add.sprite(this.player.x + 50, this.player.y, 'burgerEffect')
-            this.burger.setVelocityX(500)
-            this.burgerEffect.setVelocityX(500)
-            //this.emitter.startFollow(this.burger, 25, 0, false)
-
-            this.sound.play('firing', {volume: 0.3})
-            this.physics.add.collider(this.burger, this.boss, this.destroyBurger, () => {
-                this.score += 10
-                this.scoreText.setText('Score: ' + this.score)
-            })
-            this.physics.add.collider(this.burgerEffect, this.boss, this.destroyEffect)
-        }
-    }
-    
-    //destroys burger and plays hit animation
-    destroyBurger(burger, boss) {
-        burger.play('burgerHit', true)
-        burger.once('animationcomplete', () => {
-            burger.destroy()
-        })
-    }
-
-    //destroys burger effect
-    destroyEffect(effect, boss) {
-        effect.destroy()
-    }
-
     checkpointPing() {
         this.sound.play('checkpointPing')
     }

@@ -16,8 +16,8 @@ class PlayerParkour extends Phaser.Physics.Arcade.Sprite {
             idle: new IdleState1(),
             move: new MoveState1(),
             jump: new JumpState1(),
-            idleshoot: new IdleShootState1(),
-            runshoot: new RunShootState1(),
+            // idleshoot: new IdleShootState1(),
+            // runshoot: new RunShootState1(),
         }, [scene, this])
     }
 }
@@ -38,13 +38,6 @@ class IdleState1 extends State {
             return
         }
 
-
-        //transition to shoot
-        if(space.isDown) {
-            this.stateMachine.transition('idleshoot')
-            return
-        }
-        
         // transition to move
         if(left.isDown || right.isDown) {
             this.stateMachine.transition('move')
@@ -62,12 +55,6 @@ class MoveState1 extends State {
             this.stateMachine.transition('jump')
             return
         }5
-
-        // transition to shoot
-        if(space.isDown) {
-            this.stateMachine.transition('runshoot')
-            return
-        }
 
         // transition to idle
         if(!(left.isDown || right.isDown || up.isDown || space.isDown)) {
@@ -106,52 +93,6 @@ class JumpState1 extends State {
             player.resetFlip()
         }
         if(player.body.onFloor()) {
-            this.stateMachine.transition('move')
-        }
-    }
-}
-
-class IdleShootState1 extends State {
-    enter(scene, player) {
-        player.anims.play('idleShoot', true)
-    }
-
-    execute(scene, player) {
-        const { left, right, up, space } = scene.keys
-
-        // will transition to move states during idle state
-        if(!(space.isDown)) {
-            this.stateMachine.transition('idle')
-        } else if(left.isDown) {
-            this.stateMachine.transition('move')
-        } else if(right.isDown) {
-            this.stateMachine.transition('move')
-        } else if(Phaser.Input.Keyboard.JustDown(up) && player.body.onFloor()) {
-            this.stateMachine.transition('jump')
-        }
-    }
-}
-
-class RunShootState1 extends State {
-    execute(scene, player) {
-        const { left, right, up, space } = scene.keys
-
-        // checks condition for run shooting
-        if(space.isDown && left.isDown) {
-            player.setVelocityX(-200)
-            player.setFlip(true, false)
-            player.anims.play('runShoot', true)
-            if(Phaser.Input.Keyboard.JustDown(up) && player.body.onFloor()) {
-                this.stateMachine.transition('jump')
-            }
-        } else if(space.isDown && right.isDown) {
-            player.setVelocityX(200)
-            player.resetFlip()
-            player.anims.play('runShoot', true)
-            if(Phaser.Input.Keyboard.JustDown(up) && player.body.onFloor()) {
-                this.stateMachine.transition('jump')
-            }
-        } else {
             this.stateMachine.transition('move')
         }
     }

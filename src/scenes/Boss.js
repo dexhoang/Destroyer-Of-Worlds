@@ -4,6 +4,9 @@ class Boss extends Phaser.Scene {
     }
 
     create() {
+        this.defeat = false
+        this.targetup = false
+
         //this.sky = this.add.tileSprite(0, 0, 1000, 800, 'sky').setOrigin(0,0)
         this.sky = this.add.tileSprite(gameWidth/2, gameHeight/2, 1500, 830, 'sky')
         this.sky.fixedToCamera = true
@@ -51,7 +54,14 @@ class Boss extends Phaser.Scene {
         this.target = this.physics.add.sprite(gameWidth/2 - 300, gameHeight/2 - 20, 'target').setScale(7).setCircle(11.75).setOffset(5.75, 5.7)
         this.target2 = this.physics.add.sprite(gameWidth/2 - 230, gameHeight/2 + 135, 'target').setScale(4).setCircle(11.75).setOffset(6, 5.6)
         this.target3 = this.physics.add.sprite(gameWidth/2 - 220, gameHeight/2 - 165, 'target').setScale(4).setCircle(11.5).setOffset(6, 5.6)
-        this.target.setTint(0xffffff)
+        
+        this.target.preFX.addGlow(0xffffff, 2, 0, false, 0.1, 1)
+        this.target2.preFX.addGlow(0xffffff, 2, 0, false, 0.1, 1)
+        this.target3.preFX.addGlow(0xffffff, 2, 0, false, 0.1, 1)
+
+        this.target.visible = false
+        this.target2.visible = false
+        this.target3.visible = false
         
 
         //shoots fireballs at player
@@ -113,6 +123,26 @@ class Boss extends Phaser.Scene {
 
 
     update(time, delta) {
+        if (this.bossHP == 0) {
+            this.defeat = true
+        }
+
+        if (!this.defeat && !this.targetup) {
+            this.rando = Math.floor(Math.random() * 3) + 1
+            if (this.rando == 1) {
+                this.target.visible = true
+                this.targetup = true
+            }
+            else if (this.rando == 2) {
+                this.target2.visible = true
+                this.targetup = true
+            }
+            else if (this.rando == 3) {
+                this.target3.visible = true
+                this.targetup = true
+            }
+        }
+
         this.playerFSM.step()
 
         this.sky.tilePositionX += 5
@@ -150,6 +180,11 @@ class Boss extends Phaser.Scene {
 
         this.target3.setX(this.boss.x + 150)
         this.target3.setY(this.boss.y + 300)
+
+        if (!this.defeat) {
+
+        }
+
     }
 
 

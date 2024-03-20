@@ -4,10 +4,12 @@ class Credit extends Phaser.Scene {
     }
 
     create() {
-        
+        this.keys = this.input.keyboard.createCursorKeys()
     }
 
     update() {
-        
+        if (this.keys.left.isDown) {
+            this.scene.start('titleScene')
+        }
     }
 }

@@ -15,6 +15,9 @@ class Load extends Phaser.Scene {
             frameHeight: 16
         })
 
+        //control scene
+        this.load.image('controls', 'controls.png')
+
         //cherry
         this.load.image('cherry', 'cherry.png')
 
@@ -29,6 +32,8 @@ class Load extends Phaser.Scene {
         this.load.audio('playMusic', 'playMusic.mp3')
         this.load.audio('firing', 'firing2.wav')
         this.load.audio('checkpointPing', 'checkpoint_ping.wav')
+        this.load.audio('cherryPing', 'pickup_cherry.wav')
+        this.load.audio('fireballSound', 'fireball_sound.wav')
 
         //small lemon
         this.load.image('head', 'miniLemon.png')

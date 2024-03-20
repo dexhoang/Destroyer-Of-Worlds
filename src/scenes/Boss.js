@@ -49,11 +49,45 @@ class Boss extends Phaser.Scene {
         this.physics.world.bounds.width = 1205
 
         this.target = this.physics.add.sprite(gameWidth/2 - 300, gameHeight/2 - 20, 'target').setScale(4, 4)
-        this.target2 = this.physics.add.sprite(gameWidth/2 - 230, gameHeight/2 + 135, 'target').setScale(4, 4)
-        this.target2 = this.physics.add.sprite(gameWidth/2 - 220, gameHeight/2 - 165, 'target').setScale(4, 4)
+        //this.target2 = this.physics.add.sprite(gameWidth/2 - 230, gameHeight/2 + 135, 'target').setScale(4, 4)
+        //this.target3 = this.physics.add.sprite(gameWidth/2 - 220, gameHeight/2 - 165, 'target').setScale(4, 4)
         // this.target.setVisible(false)
 
+        //shoots fireballs at player
+        function shootFireball() {
+            this.fireball = this.physics.add.sprite(this.boss.x - 55, this.boss.y - 50, 'fireball').setScale(2, 2)
+            this.fireballAngle = Phaser.Math.Angle.BetweenPoints(this.fireball, this.player)
+            this.convertAngle = Phaser.Math.RadToDeg(this.fireballAngle)
+            this.physics.moveTo(this.fireball, this.player.x, this.player.y, 500)
+            this.fireball.setRotation(this.fireballAngle)
 
+            this.sound.play('fireballSound', {volume: 0.3})
+        }
+
+        function shootFireball2() {
+            this.fireball = this.physics.add.sprite(this.boss.x + 55, this.boss.y - 50, 'fireball').setScale(2, 2)
+            this.fireballAngle = Phaser.Math.Angle.BetweenPoints(this.fireball, this.player)
+            this.convertAngle = Phaser.Math.RadToDeg(this.fireballAngle)
+            this.physics.moveTo(this.fireball, this.player.x, this.player.y, 500)
+            this.fireball.setRotation(this.fireballAngle)
+
+            this.sound.play('fireballSound', {volume: 0.3})
+        }
+
+        //sets timed fireball attacks
+        this.time.addEvent({
+            delay: Phaser.Math.Between(1000, 3000),
+            callback: shootFireball,
+            callbackScope: this,
+            loop: true
+        })
+
+        this.time.addEvent({
+            delay: Phaser.Math.Between(1000, 3000),
+            callback: shootFireball2,
+            callbackScope: this,
+            loop: true
+        })
 
         //'animate' boss movement
         this.bossTween = this.tweens.add({
@@ -65,6 +99,7 @@ class Boss extends Phaser.Scene {
             repeat: -1
         })
 
+        //'animate' boss HP bar
         this.bossBarTween = this.tweens.add({
             targets: this.bossBar,
             y: this.bossBar.y - 15,
@@ -75,9 +110,6 @@ class Boss extends Phaser.Scene {
         })
     }
 
-    toggleVisible () {
-
-    }
 
     update(time, delta) {
         this.playerFSM.step()
@@ -138,7 +170,7 @@ class Boss extends Phaser.Scene {
             this.burgerEffect.setVelocityX(-500)
 
             //audio cue
-            this.sound.play('firing', {volume: 0.3})
+            this.sound.play('firing', {volume: 0.8})
 
             //collide burger with boss and callback to destroy burger
             this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
@@ -153,7 +185,7 @@ class Boss extends Phaser.Scene {
             this.burger.setVelocityX(500)
             this.burgerEffect.setVelocityX(500)
 
-            this.sound.play('firing', {volume: 0.3})
+            this.sound.play('firing', {volume: 0.8})
             this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
             this.physics.add.collider(this.burgerEffect, this.boss, this.destroyEffect, () => {
                 this.bossHP -= 20

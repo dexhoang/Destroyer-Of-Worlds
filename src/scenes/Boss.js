@@ -77,6 +77,8 @@ class Boss extends Phaser.Scene {
             this.physics.add.overlap(this.fireball, this.player, (fireball, player) => {
                 fireball.destroy()
                 this.sound.play('fireballHit')
+                this.playerHP -= 5
+                this.setValue(this.playerBar, this.playerHP, 100)
             })
 
             if (this.fireball.x > 1000) {
@@ -95,6 +97,8 @@ class Boss extends Phaser.Scene {
             this.physics.add.overlap(this.fireball, this.player, (fireball, player) => {
                 fireball.destroy()
                 this.sound.play('fireballHit')
+                this.playerHP -= 5
+                this.setValue(this.playerBar, this.playerHP, 100)
             })
 
             if (this.fireball.x > 1000) {
@@ -148,6 +152,9 @@ class Boss extends Phaser.Scene {
             this.scene.start('titleScene')
         }
 
+        if (this.playerHP == 0) {
+            this.scene.start('endScene')
+        }
 
         if (!this.defeat && !this.targetup) {
             this.rando = Math.floor(Math.random() * 3) + 1

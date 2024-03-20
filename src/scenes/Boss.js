@@ -40,7 +40,7 @@ class Boss extends Phaser.Scene {
         this.playerHP = 100
 
         this.burgerBar = this.createBar(this.player.x - 50, this.player.y - 80, 100, 5, 0xf2ca5a)
-        this.maxBurgers = 10
+        this.maxBurgers = 3
 
         //boss health bar
         this.bossBar = this.createBar(this.boss.x - 100, this.boss.y - 315, 360, 40, 0x7A1800)
@@ -154,17 +154,17 @@ class Boss extends Phaser.Scene {
             if (this.rando == 1) {
                 this.target.visible = true
                 this.targetup = true
-                this.targetHP = Math.floor(Math.random() * 7) + 1
+                this.targetHP = Math.floor(Math.random() * 4) + 1
             }
             else if (this.rando == 2) {
                 this.target2.visible = true
                 this.targetup = true
-                this.targetHP = Math.floor(Math.random() * 7) + 1
+                this.targetHP = Math.floor(Math.random() * 4) + 1
             }
             else if (this.rando == 3) {
                 this.target3.visible = true
                 this.targetup = true
-                this.targetHP = Math.floor(Math.random() * 7) + 1
+                this.targetHP = Math.floor(Math.random() * 4) + 1
             }
         }
 
@@ -176,15 +176,15 @@ class Boss extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(this.keys.space) && this.maxBurgers > 0) {
             this.maxBurgers --
             this.shootBurger()
-            this.setValue(this.burgerBar, this.maxBurgers, 10)
+            this.setValue(this.burgerBar, this.maxBurgers, 3)
         }
 
         //checks if player has less than 10 burger, then reloads burgers every 1.5 seconds
-        if(this.maxBurgers < 10) {
+        if(this.maxBurgers < 3) {
             this.timeSince += delta
             while(this.timeSince >= 1000) {
                 this.maxBurgers ++
-                this.setValue(this.burgerBar, this.maxBurgers, 10)
+                this.setValue(this.burgerBar, this.maxBurgers, 3)
                 this.timeSince = 0
             }
         } else {

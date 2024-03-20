@@ -30,7 +30,6 @@ class Boss extends Phaser.Scene {
         this.keys = this.input.keyboard.createCursorKeys()
         this.player = new PlayerBoss(this, this.spawn.x, this.spawn.y, 'playerIdle', 0)
         this.player.setCollideWorldBounds(true)
-        this.physics.add.collider(this.player, this.boss)
 
         //create health/burger b1ar for player
         this.playerBar = this.createBar(this.player.x - 50, this.player.y - 100, 100, 20, 0x1A9534)
@@ -61,7 +60,7 @@ class Boss extends Phaser.Scene {
         this.target2.visible = false
         this.target3.visible = false
         
-        this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
+        this.physics.world.setBounds(0, 0, 1200, map.heightInPixels)
         this.cameras.main.setBounds(100, 0, map.widthInPixels, map.heightInPixels)
 
         //shoots fireballs at player
@@ -236,12 +235,31 @@ class Boss extends Phaser.Scene {
             this.sound.play('firing', {volume: 0.8})
 
             //collide burger with boss and callback to destroy burger
-            this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
-            this.physics.add.collider(this.burgerEffect, this.boss, this.destroyEffect, () => {
-                this.bossHP -= 20
-                console.log(this.bossHP)
-                this.setValue(this.bossBar, this.bossHP, 1000)
-            })
+            if (this.target.visible == true) {
+                this.physics.add.overlap(this.burger, this.target, this.destroyBurger)
+                this.physics.add.overlap(this.burgerEffect, this.target, this.destroyEffect, () => {
+                    this.bossHP -= 20
+                    console.log(this.bossHP)
+                    this.setValue(this.bossBar, this.bossHP, 1000)
+                })
+            }
+            if (this.target2.visible == true) {
+                this.physics.add.overlap(this.burger, this.target2, this.destroyBurger)
+                this.physics.add.overlap(this.burgerEffect, this.target2, this.destroyEffect, () => {
+                    this.bossHP -= 20
+                    console.log(this.bossHP)
+                    this.setValue(this.bossBar, this.bossHP, 1000)
+                })
+            }
+            if (this.target3.visible == true) {
+                this.physics.add.overlap(this.burger, this.target3, this.destroyBurger)
+                this.physics.add.overlap(this.burgerEffect, this.target3, this.destroyEffect, () => {
+                    this.bossHP -= 20
+                    console.log(this.bossHP)
+                    this.setValue(this.bossBar, this.bossHP, 1000)
+                })
+            }
+
         } else {
             this.burger = this.physics.add.sprite(this.player.x + 50, this.player.y, 'burger')
             this.burgerEffect = this.physics.add.sprite(this.player.x + 50, this.player.y, 'burgerEffect')
@@ -249,17 +267,12 @@ class Boss extends Phaser.Scene {
             this.burgerEffect.setVelocityX(500)
 
             this.sound.play('firing', {volume: 0.8})
-            this.physics.add.collider(this.burger, this.boss, this.destroyBurger)
-            this.physics.add.collider(this.burgerEffect, this.boss, this.destroyEffect, () => {
-                this.bossHP -= 20
-                console.log(this.bossHP)
-                this.setValue(this.bossBar, this.bossHP, 1000)
-            })
         }
     }
     
     //destroys burger and plays hit animation
     destroyBurger(burger, boss) {
+        burger.setVelocityX(0)
         burger.play('burgerHit', true)
         burger.once('animationcomplete', () => {
             burger.destroy()

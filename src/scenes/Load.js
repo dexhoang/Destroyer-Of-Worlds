@@ -34,6 +34,7 @@ class Load extends Phaser.Scene {
         this.load.audio('checkpointPing', 'checkpoint_ping.wav')
         this.load.audio('cherryPing', 'pickup_cherry.wav')
         this.load.audio('fireballSound', 'fireball_sound.wav')
+        this.load.audio('fireballHit', 'fireball_hit.wav')
 
         //small lemon
         this.load.image('head', 'miniLemon.png')

@@ -134,6 +134,32 @@ class Boss extends Phaser.Scene {
             repeat: -1
         })
 
+        // //target tween
+        // this.targetTween = this.tweens.add({
+        //     targets: this.target,
+        //     duration: 1000,
+        //     angle: 90,
+        //     scale: 5,
+
+            
+        // })
+
+        // this.targetTween2 = this.tweens.add({
+        //     targets: this.target2,
+        //     duration: 500,
+        //     angle: 90,
+        //     scale: 3
+            
+        // })
+
+        // this.targetTween3 = this.tweens.add({
+        //     targets: this.target3,
+        //     duration: 500,
+        //     angle: 90,
+        //     scale: 3
+            
+        // })
+
         //'animate' boss HP bar
         this.bossBarTween = this.tweens.add({
             targets: this.bossBar,
@@ -160,20 +186,41 @@ class Boss extends Phaser.Scene {
             this.rando = Math.floor(Math.random() * 3) + 1
             if (this.rando == 1) {
                 this.target.visible = true
+                this.targetTween = this.tweens.add({
+                    targets: this.target,
+                    duration: 1000,
+                    angle: 90,
+                    scale: 5,
+                })
+                this.targetTween.restart
                 this.targetup = true
                 this.targetHP = Math.floor(Math.random() * 4) + 1
             }
             else if (this.rando == 2) {
                 this.target2.visible = true
+                this.targetTween2 = this.tweens.add({
+                    targets: this.target2,
+                    duration: 1000,
+                    angle: 90,
+                    scale: 5,
+                })
+                this.targetTween2.restart
                 this.targetup = true
                 this.targetHP = Math.floor(Math.random() * 4) + 1
             }
             else if (this.rando == 3) {
                 this.target3.visible = true
+                this.targetTween3 = this.tweens.add({
+                    targets: this.target3,
+                    duration: 1000, 
+                    angle: 90,
+                    scale: 5,
+                })
+                this.targetTween3.restart
                 this.targetup = true
                 this.targetHP = Math.floor(Math.random() * 4) + 1
             }
-        }
+        } 
 
 
         this.playerFSM.step()

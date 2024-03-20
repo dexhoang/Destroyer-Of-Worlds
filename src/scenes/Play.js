@@ -17,9 +17,10 @@ class Play extends Phaser.Scene {
         this.check2 = false
         this.pDone = false 
         this.lives = 3
-        // this.score = 0
+        var score = 0
         this.cherried = false
         this.cherry = 0
+        console.log(this.cherry)
         
         //add background
         this.sky = this.add.tileSprite(0, 0, 950, 800, 'sky').setOrigin(0, 0)
@@ -206,6 +207,7 @@ class Play extends Phaser.Scene {
 
         this.physics.add.overlap(this.player, this.bigCherry, () => {
             this.bigCherry.destroy()
+            this.sound.play('cherryPing')
             this.cherry += 5000
             this.lives += 1
             this.livesLeft.setText('x ' + this.lives)

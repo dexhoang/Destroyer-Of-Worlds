@@ -14,6 +14,15 @@ class Dead extends Phaser.Scene {
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
 
+        //score
+        let scoreConfig = {
+            fontFamily: 'sans-serif',
+            fontSize: '35px',
+            align: 'left',
+            color: '#7C1F00'
+        }
+
+        this.scoreText = this.add.text(gameWidth/2- 100, gameHeight/2 + 200, 'SCORE:' + score, scoreConfig).setOrigin(0, 0)
           
         //create keys for option picking and sets option at start
         this.keys = this.input.keyboard.createCursorKeys()

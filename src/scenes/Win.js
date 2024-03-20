@@ -7,6 +7,16 @@ class Win extends Phaser.Scene {
         //add image
         this.add.image(0, 0, 'winScreen').setOrigin(0, 0)
 
+        score
+        let scoreConfig = {
+            fontFamily: 'sans-serif',
+            fontSize: '35px',
+            align: 'left',
+            color: '#024300'
+        }
+
+        this.scoreText = this.add.text(gameWidth/2- 100, gameHeight/2 + 200, 'SCORE:' + score, scoreConfig).setOrigin(0, 0)
+
         //adding keyboard inputs
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)

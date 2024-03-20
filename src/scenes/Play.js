@@ -17,6 +17,8 @@ class Play extends Phaser.Scene {
         this.pDone = false 
         this.lives = 3
         this.score = 0
+        this.cherried = false
+        this.cherry = 0
         
         //add background
         this.sky = this.add.tileSprite(0, 0, 950, 800, 'sky').setOrigin(0, 0)
@@ -62,12 +64,23 @@ class Play extends Phaser.Scene {
         this.fightScreen = map.findObject('Points', (obj) => obj.name === 'fightScreen')   
         this.b1 = map.findObject('Points', (obj) => obj.name === 'boss1')
         this.b2 = map.findObject('Points', (obj) => obj.name === 'boss2')
+        this.bigC = map.findObject('Points', (obj) => obj.name === 'special')
 
-        this.c1 = map.findObject('Points', (obj) => obj.name === 'c1')
-        this.c2 = map.findObject('Points', (obj) => obj.name === 'c2')
+        this.bigCherry  = this.physics.add.sprite(this.bigC.x, this.bigC.y - 50, 'cherry').setCircle(32)
+        this.bigCherry.body.setOffset(19)
 
-        this.cherry1 = this.physics.add.sprite(this.c1.x, this.c1.y, 'cherry').setScale(0.6, 0.6)
-        this.cherry2 = this.physics.add.sprite(this.c2.x, this.c2.y, 'cherry').setScale(0.6, 0.6)
+
+        //create a group for cherries
+        this.cherriesGroup = this.physics.add.group()
+
+        //adding cherries
+        map.filterObjects('Points', (obj) => obj.name.startsWith('c')).forEach(obj => {
+            const cherry = this.cherriesGroup.create(obj.x, obj.y, 'cherry').setScale(0.6)
+            cherry.body.setCircle(32)
+            cherry.body.setOffset(19)
+
+        });
+
         
         this.checkpoint1 = this.physics.add.sprite(this.point1.x + 5, this.point1.y + 85, 'redFlag')
         this.checkpoint2 = this.physics.add.sprite(this.point2.x, this.point2.y + 35, 'redFlag')
@@ -79,6 +92,7 @@ class Play extends Phaser.Scene {
         //collision with map
         bgLayer.setCollisionByProperty({collides: true})
         this.physics.add.collider(this.player, bgLayer)
+
 
         //checks for player/checkpoint overlap -> changes flag sprite and plays sound indicator
         this.checkOneSound = false
@@ -163,8 +177,6 @@ class Play extends Phaser.Scene {
             console.log ('CHECKPOINT2: ' + this.point2.x, this.point2.y)
             console.log ('SCORE: ' + this.score)
             this.scene.start('bossScene')
-            // this.player.setX(this.pEnd.x - 100)
-            // this.player.setY(this.pEnd.y)
         }
 
         //update player FSM
@@ -191,6 +203,17 @@ class Play extends Phaser.Scene {
             this.gameOver = true
         })
 
+        //collision with cherries
+        this.physics.world.overlap(this.player, this.cherriesGroup, this.handleCollision, null, this)
+
+        this.physics.add.overlap(this.player, this.bigCherry, () => {
+            this.bigCherry.destroy()
+            this.cherry += 5000
+            this.lives += 1
+            this.livesLeft.setText('x ' + this.lives)
+        })
+        
+
         //prevents player from spawning behind enemy -> immediate game over
         if (this.player.x < this.boss.x) {
             this.gameOver = true
@@ -206,6 +229,15 @@ class Play extends Phaser.Scene {
         //checks remaining lives
         if (this.lives == 0) {
             this.gameOver = true
+        }
+
+        //check if got cherry
+        if (this.score < this.cherry){
+            if (this.cherried == true) {
+                this.score += 20
+                this.scoreText.setText('SCORE:' + this.score)
+            }
+            this.cherries = false
         }
 
         //call respawn
@@ -266,8 +298,16 @@ class Play extends Phaser.Scene {
             }
             this.scene.start('bossScene')
         }
+        
     }
     checkpointPing() {
         this.sound.play('checkpointPing')
     }
+
+    handleCollision(player, cherry) {
+        cherry.destroy()
+        this.cherried = true
+        this.cherry += 1000
+    }
+
 }

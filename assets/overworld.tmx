@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="500" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="17">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="500" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="36">
  <editorsettings>
   <export target="overworld.json" format="json"/>
  </editorsettings>
@@ -5782,13 +5782,55 @@
   <object id="12" name="boss1" x="6993.94" y="372.727">
    <point/>
   </object>
-  <object id="13" name="cherry" x="2036.36" y="133.333">
+  <object id="13" name="special" x="2036.36" y="133.333">
    <point/>
   </object>
-  <object id="14" name="c1" x="446.667" y="585.333">
+  <object id="14" name="c" x="446.667" y="585.333">
    <point/>
   </object>
-  <object id="15" name="c2" x="637.333" y="585.33">
+  <object id="15" name="c" x="637.333" y="585.33">
+   <point/>
+  </object>
+  <object id="20" name="c" x="1441.33" y="254.667">
+   <point/>
+  </object>
+  <object id="21" name="c" x="1506.67" y="254.667">
+   <point/>
+  </object>
+  <object id="22" x="1570.67" y="254.667">
+   <point/>
+  </object>
+  <object id="23" name="c" x="1570.67" y="254.667">
+   <point/>
+  </object>
+  <object id="24" name="c" x="1538.67" y="254.67">
+   <point/>
+  </object>
+  <object id="25" name="c" x="1473.33" y="254.667">
+   <point/>
+  </object>
+  <object id="26" name="c" x="1978.67" y="490.667">
+   <point/>
+  </object>
+  <object id="28" name="c" x="2560" y="416">
+   <point/>
+  </object>
+  <object id="29" name="c" x="2752" y="416">
+   <point/>
+  </object>
+  <object id="30" name="c" x="2944" y="416">
+   <point/>
+  </object>
+  <object id="31" name="c" x="3888" y="320">
+   <point/>
+  </object>
+  <object id="32" name="c" x="4064" y="320">
+   <point/>
+  </object>
+  <object id="33" name="c" x="4272" y="320">
+   <point/>
+  </object>
+  <object id="34" name="c" x="4464" y="320">
    <point/>
   </object>
  </objectgroup>

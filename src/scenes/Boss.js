@@ -253,6 +253,8 @@ class Boss extends Phaser.Scene {
                         this.target.visible = false
                         this.targetup = false
                     }
+
+                    this.sound.play('burgerHit')
                 })
             }
             if (this.target2.visible == true) {
@@ -267,6 +269,8 @@ class Boss extends Phaser.Scene {
                         this.target2.visible = false
                         this.targetup = false
                     }
+
+                    this.sound.play('burgerHit')
                 })
             }
             if (this.target3.visible == true) {
@@ -281,6 +285,8 @@ class Boss extends Phaser.Scene {
                         this.target3.visible = false
                         this.targetup = false
                     }
+
+                    this.sound.play('burgerHit')
                 })
             }
 

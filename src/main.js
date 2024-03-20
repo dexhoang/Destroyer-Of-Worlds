@@ -1,5 +1,17 @@
-//Names: Alan Lu, Dexter Hoang
-//Title: Destroyer of Worlds
+//NAMES: Alan Lu, Dexter Hoang
+//TITLE: Destroyer of Worlds
+//MAJOR COMPONENTS USED:
+    // -physics systems
+    // -cameras
+    // -particle effects
+    // -text objects
+    // -animation manager
+    // -tween manager
+    // -tilemaps
+    // -timers
+    // -FSMs
+
+//FOR GRADER - if parkour is too difficult, press key "C" in order to directly skip parkour and enter boss fight
 
 'use strict'
 
@@ -15,7 +27,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            //debug: true,
+            debug: true,
             gravity: {
                 x: 0,
                 y: 0
@@ -25,7 +37,7 @@ let config = {
     render: {
         pixelArt: true
     },
-    scene: [ Load, Title, Controls, Credit, Play, Boss, Dead ]
+    scene: [ Load, Title, Controls, Credit, Play, Boss, Dead , Win]
 }
 
 let game = new Phaser.Game(config)

@@ -4,14 +4,17 @@ class Boss extends Phaser.Scene {
     }
 
     create() {
+        //variables
         this.defeat = false
         this.targetHP = 0
         this.targetup = false
+        this.timeSince = 0
 
         //background music 
+        this.sound.stopAll()
         this.sound.play('bossMusic', {volume: 0.8})
 
-        //this.sky = this.add.tileSprite(0, 0, 1000, 800, 'sky').setOrigin(0,0)
+        //add background/set up camera
         this.sky = this.add.tileSprite(gameWidth/2, gameHeight/2, 1500, 830, 'sky')
         this.sky.fixedToCamera = true
         this.sky.setScrollFactor(0)
@@ -21,21 +24,24 @@ class Boss extends Phaser.Scene {
         const bgLayer = map.createLayer('Background', tileset, 0, 1)
         this.cameras.main.setZoom(0.85)
         this.cameras.main.setScroll(0, 250)
+        this.physics.world.setBounds(0, 0, 1200, map.heightInPixels)
+        this.cameras.main.setBounds(100, 0, map.widthInPixels, map.heightInPixels)
         
-
+        //sets player/boss spawn
         this.spawn = map.findObject('Points', (obj) => obj.name === 'spawn')
         this.bossSpawn = map.findObject('Points', (obj) => obj.name === 'boss1')
 
+        //boss configs
         this.boss = this.physics.add.sprite(this.bossSpawn.x, this.bossSpawn.y, 'boss')
         this.boss.body.setSize(360, 670)
         this.boss.body.setOffset(15, 60)
         this.boss.body.setImmovable(true)
 
-        this.keys = this.input.keyboard.createCursorKeys()
+        //add player
         this.player = new PlayerBoss(this, this.spawn.x, this.spawn.y, 'playerIdle', 0)
         this.player.setCollideWorldBounds(true)
 
-        //create health/burger b1ar for player
+        //create health/burger bar for player
         this.playerBar = this.createBar(this.player.x - 50, this.player.y - 100, 100, 20, 0x1A9534)
         this.playerHP = 100
 
@@ -46,13 +52,11 @@ class Boss extends Phaser.Scene {
         this.bossBar = this.createBar(this.boss.x - 100, this.boss.y - 315, 360, 40, 0x7A1800)
         this.bossHP = 1000
 
-        //sets time for burger reload
-        this.timeSince = 0
-        //this.cameras.main.startFollow(this.player, true, 0.25, 0.25)
-
+        //makes collision between player and tilemap
         bgLayer.setCollisionByProperty({collides: true})
         this.physics.add.collider(this.player, bgLayer)
 
+        //adds target, sets visual configs
         this.target = this.physics.add.sprite(gameWidth/2 - 300, gameHeight/2 - 20, 'target').setScale(7).setCircle(11.75).setOffset(5.75, 5.7)
         this.target2 = this.physics.add.sprite(gameWidth/2 - 230, gameHeight/2 + 135, 'target').setScale(4).setCircle(11.75).setOffset(6, 5.6)
         this.target3 = this.physics.add.sprite(gameWidth/2 - 220, gameHeight/2 - 165, 'target').setScale(4).setCircle(11.5).setOffset(6, 5.6)
@@ -63,13 +67,10 @@ class Boss extends Phaser.Scene {
         this.target.visible = false
         this.target2.visible = false
         this.target3.visible = false
-        
-        this.physics.world.setBounds(0, 0, 1200, map.heightInPixels)
-        this.cameras.main.setBounds(100, 0, map.widthInPixels, map.heightInPixels)
 
         //shoots fireballs at player
         function shootFireball() {
-            this.fireball = this.physics.add.sprite(this.boss.x - 55, this.boss.y - 50, 'fireball').setScale(2, 2)
+            this.fireball = this.physics.add.sprite(this.boss.x - 55, this.boss.y - 50, 'fireball').setScale(2, 2).setSize(0.5, 0.5)
             this.fireballAngle = Phaser.Math.Angle.BetweenPoints(this.fireball, this.player)
             this.convertAngle = Phaser.Math.RadToDeg(this.fireballAngle)
             this.physics.moveTo(this.fireball, this.player.x, this.player.y, 500)
@@ -89,7 +90,7 @@ class Boss extends Phaser.Scene {
         }
 
         function shootFireball2() {
-            this.fireball = this.physics.add.sprite(this.boss.x + 55, this.boss.y - 50, 'fireball').setScale(2, 2)
+            this.fireball = this.physics.add.sprite(this.boss.x + 55, this.boss.y - 50, 'fireball').setScale(2, 2).setSize(0.5, 0.5)
             this.fireballAngle = Phaser.Math.Angle.BetweenPoints(this.fireball, this.player)
             this.convertAngle = Phaser.Math.RadToDeg(this.fireballAngle)
             this.physics.moveTo(this.fireball, this.player.x, this.player.y, 500)
@@ -169,13 +170,17 @@ class Boss extends Phaser.Scene {
             yoyo: true,
             repeat: -1
         })
+
+        //create cursor keys
+        this.keys = this.input.keyboard.createCursorKeys()
     }
 
 
     update(time, delta) {
+        //starts win screen when boss is defeated
         if (this.bossHP == 0) {
             this.defeat = true
-            this.scene.start('titleScene')
+            this.scene.start('winScene')
         }
 
         if (this.playerHP == 0) {
@@ -222,11 +227,13 @@ class Boss extends Phaser.Scene {
             }
         } 
 
-
+        //updates player FSM
         this.playerFSM.step()
 
+        //moves sky background
         this.sky.tilePositionX += 5
 
+        //depletes burger bar 
         if(Phaser.Input.Keyboard.JustDown(this.keys.space) && this.maxBurgers > 0) {
             this.maxBurgers --
             this.shootBurger()
@@ -252,6 +259,7 @@ class Boss extends Phaser.Scene {
         this.burgerBar.x = this.player.x - 50
         this.burgerBar.y = this.player.y - 80
 
+        //position targets
         this.target.setX(this.boss.x + 25)
         this.target.setY(this.boss.y + 100)
 

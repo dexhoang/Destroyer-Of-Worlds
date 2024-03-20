@@ -38,7 +38,6 @@ class IdleState extends State {
             return
         }
 
-
         //transition to shoot
         if(space.isDown) {
             this.stateMachine.transition('idleshoot')

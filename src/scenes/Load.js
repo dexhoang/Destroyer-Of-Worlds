@@ -28,7 +28,10 @@ class Load extends Phaser.Scene {
         this.load.image('sky', 'sky.png')
 
         //end screen
-        this.load.image('endScreen', 'gameEnd.png')
+        this.load.image('endScreen', 'gameover_screen.png')
+
+        //win screen
+        this.load.image('winScreen', 'win.png')
 
         //load sound
         this.load.audio('titleMusic', 'title_music.mp3')
@@ -41,6 +44,7 @@ class Load extends Phaser.Scene {
         this.load.audio('fireballHit', 'fireball_hit.wav')
         this.load.audio('jumpSound', 'jump.wav')
         this.load.audio('burgerHit', 'burger_hit.wav')
+        this.load.audio('winMusic', 'winMusic.mp3')
 
         //small lemon
         this.load.image('head', 'miniLemon.png')

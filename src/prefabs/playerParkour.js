@@ -16,8 +16,6 @@ class PlayerParkour extends Phaser.Physics.Arcade.Sprite {
             idle: new IdleState1(),
             move: new MoveState1(),
             jump: new JumpState1(),
-            // idleshoot: new IdleShootState1(),
-            // runshoot: new RunShootState1(),
         }, [scene, this])
     }
 }

@@ -1,25 +1,24 @@
-class Dead extends Phaser.Scene {
+class Win extends Phaser.Scene {
     constructor() {
-        super("endScene")
+        super("winScene")
     }
 
     create() {
-        //ends previous music
-        this.sound.stopAll()
-        
-        //adding end screen
-        this.add.image(game.config.width/2, game.config.height/2, 'endScreen').setScale(0.75, 0.75)
+        //add image
+        this.add.image(0, 0, 'winScreen').setOrigin(0, 0)
 
         //adding keyboard inputs
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
 
-          
+        //bgMusic
+        this.sound.stopAll()
+        this.sound.play('winMusic', {volume:0.8})
+        
         //create keys for option picking and sets option at start
         this.keys = this.input.keyboard.createCursorKeys()
         this.optionIndex = 0
         this.displayOption(this.optionIndex)
-
     }
 
     displayOption(index) {
@@ -34,15 +33,15 @@ class Dead extends Phaser.Scene {
 
         switch(index) {
             case 0:
-                this.option = this.add.sprite(gameWidth/2 - 90, gameHeight/2 - 25, 'optionBlinker').setScale(1.5, 1.5)
-                this.optionFlip = this.add.sprite(gameWidth/2 + 95, gameHeight/2 - 25, 'optionBlinker').setScale(1.5, 1.5)
+                this.option = this.add.sprite(gameWidth/2 - 90, gameHeight/2 - 55, 'optionBlinker').setScale(1.5, 1.5)
+                this.optionFlip = this.add.sprite(gameWidth/2 + 85, gameHeight/2 - 55, 'optionBlinker').setScale(1.5, 1.5)
                 this.optionFlip.setFlip(true)
                 this.option.play('optionBlinker')
                 this.optionFlip.play('optionBlinker')
                 break
             case 1:
-                this.option = this.add.sprite(gameWidth/2 - 65, gameHeight/2 + 60, 'optionBlinker').setScale(1.5, 1.5)
-                this.optionFlip = this.add.sprite(gameWidth/2 + 65, gameHeight/2 + 60, 'optionBlinker').setScale(1.5, 1.5)
+                this.option = this.add.sprite(gameWidth/2 - 130, gameHeight/2 + 55 , 'optionBlinker').setScale(1.5, 1.5)
+                this.optionFlip = this.add.sprite(gameWidth/2 + 135, gameHeight/2 + 55, 'optionBlinker').setScale(1.5, 1.5)
                 this.optionFlip.setFlip(true)
                 this.option.play('optionBlinker')
                 this.optionFlip.play('optionBlinker')
@@ -68,9 +67,9 @@ class Dead extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(this.keys.space)) {
             if (this.optionIndex == 0) {
                 this.sound.stopAll()
-                this.scene.start('playScene')
-            } else if (this.optionIndex == 1) {
                 this.scene.start('titleScene')
+            } else if (this.optionIndex == 1) {
+                this.scene.start('playScene')
             }
         }
         

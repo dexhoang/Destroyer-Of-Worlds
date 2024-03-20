@@ -26,6 +26,7 @@ class Play extends Phaser.Scene {
         this.sky.fixedToCamera = true
 
         //background music 
+        this.sound.stopAll()
         this.sound.play('parkourMusic', {volume: 0.8})
 
         //add enemy
@@ -81,7 +82,7 @@ class Play extends Phaser.Scene {
 
         });
 
-        
+        //create checkpoint sprites
         this.checkpoint1 = this.physics.add.sprite(this.point1.x + 5, this.point1.y + 85, 'redFlag')
         this.checkpoint2 = this.physics.add.sprite(this.point2.x, this.point2.y + 35, 'redFlag')
         this.endPoint = this.physics.add.sprite(this.pEnd.x, this.pEnd.y + 32, 'redFlag')
@@ -99,6 +100,7 @@ class Play extends Phaser.Scene {
         this.checkTwoSound = false
         this.endPointSound = false
 
+        //particle for checkpoint
         this.emitter = this.add.particles(0, 0, '5x5', {
             speed: 150,
             tint: [ 0xFFF800, 0xFFFFFF, 0xFFDB00 ],
@@ -106,6 +108,7 @@ class Play extends Phaser.Scene {
             lifespan: 300
         })
 
+        //checks for checkpoint/player overlays -> plays sound/emit particles/changes sprite
         this.physics.add.overlap(this.player, this.checkpoint1, () => {
             if (this.checkOneSound == false) {
                 this.sound.play('checkpointPing')
@@ -169,15 +172,8 @@ class Play extends Phaser.Scene {
     }
 
     update(time, delta) {
-        //test key
+        //key to skip parkour (grading purposes)
         if (Phaser.Input.Keyboard.JustDown(keyC)) {
-            //this.death = true
-            console.log ('BOSS: ' + this.boss.x, this.boss.y)
-            console.log ('PLAYER: ' + this.player.x, this.player.y)
-            console.log ('CHECKPOINT1: ' + this.point1.x, this.point1.y)
-            console.log ('CHECKPOINT2: ' + this.point2.x, this.point2.y)
-            console.log ('SCORE: ' + score)
-            this.sound.stopAll()
             this.scene.start('bossScene')
         }
 
@@ -281,32 +277,20 @@ class Play extends Phaser.Scene {
             this.scene.start('endScene')
         }
 
-
+        //starts boss fight when player reaches end
         if (this.pDone == true) {
-            const distance = Phaser.Math.Distance.BetweenPoints(this.player, this.fightScreen)
-            this.physics.moveTo(this.player, this.fightScreen.x, this.fightScreen.y, 200)
-            if (this.player.body.speed > 0) {
-                if (distance < 4) {
-                    this.player.body.reset(this.fightScreen.x, this.fightScreen.y)
-                } 
-            }
-            this.physics.moveTo(this.boss, this.b1.x, this.b1.y, 550)
-            const distance1 = Phaser.Math.Distance.BetweenPoints(this.boss, this.b1)
-            if(this.boss.body.speed > 0) {
-                if (distance1 < 4) {
-                    this.boss.body.reset(this.b1.x, this.b1.y)
-                    this.hit = this.physics.add.sprite(this.b1.x, this.b1.y, 'target').setScale(3, 3)
-                }
-            }
             this.sound.stopAll()
             this.scene.start('bossScene')
         }
         
     }
+    
+    //plays checkpoint noise
     checkpointPing() {
         this.sound.play('checkpointPing')
     }
 
+    //destroys cherry after colliding with player
     handleCollision(player, cherry) {
         cherry.destroy()
         this.cherried = true

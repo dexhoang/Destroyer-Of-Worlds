@@ -48,10 +48,11 @@ class Boss extends Phaser.Scene {
 
         this.physics.world.bounds.width = 1205
 
-        this.target = this.physics.add.sprite(gameWidth/2 - 300, gameHeight/2 - 20, 'target').setScale(4, 4)
-        //this.target2 = this.physics.add.sprite(gameWidth/2 - 230, gameHeight/2 + 135, 'target').setScale(4, 4)
-        //this.target3 = this.physics.add.sprite(gameWidth/2 - 220, gameHeight/2 - 165, 'target').setScale(4, 4)
-        // this.target.setVisible(false)
+        this.target = this.physics.add.sprite(gameWidth/2 - 300, gameHeight/2 - 20, 'target').setScale(7).setCircle(11.75).setOffset(5.75, 5.7)
+        this.target2 = this.physics.add.sprite(gameWidth/2 - 230, gameHeight/2 + 135, 'target').setScale(4).setCircle(11.75).setOffset(6, 5.6)
+        this.target3 = this.physics.add.sprite(gameWidth/2 - 220, gameHeight/2 - 165, 'target').setScale(4).setCircle(11.5).setOffset(6, 5.6)
+        this.target.setTint(0xffffff)
+        
 
         //shoots fireballs at player
         function shootFireball() {
@@ -140,7 +141,17 @@ class Boss extends Phaser.Scene {
 
         this.burgerBar.x = this.player.x - 50
         this.burgerBar.y = this.player.y - 80
+
+        this.target.setX(this.boss.x + 25)
+        this.target.setY(this.boss.y + 100)
+
+        this.target2.setX(this.boss.x + 70)
+        this.target2.setY(this.boss.y - 70)
+
+        this.target3.setX(this.boss.x + 150)
+        this.target3.setY(this.boss.y + 300)
     }
+
 
     //function to create bar
     createBar(x, y, width, height, color) {

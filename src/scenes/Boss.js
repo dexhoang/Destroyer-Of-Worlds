@@ -204,10 +204,6 @@ class Boss extends Phaser.Scene {
         this.target3.setX(this.boss.x + 150)
         this.target3.setY(this.boss.y + 300)
 
-        if (!this.defeat) {
-
-        }
-
     }
 
 

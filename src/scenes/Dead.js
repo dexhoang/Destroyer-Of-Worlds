@@ -17,6 +17,7 @@ class Dead extends Phaser.Scene {
     update() {
         //controls - space to play and C for credits
         if (Phaser.Input.Keyboard.JustDown(keySpace)) {
+            score = 0
             this.scene.start('playScene')
         }
 

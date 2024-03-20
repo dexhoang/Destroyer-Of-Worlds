@@ -1,3 +1,4 @@
+var score = 0
 class Play extends Phaser.Scene {
     constructor() {
         super("playScene")
@@ -16,7 +17,7 @@ class Play extends Phaser.Scene {
         this.check2 = false
         this.pDone = false 
         this.lives = 3
-        this.score = 0
+        // this.score = 0
         this.cherried = false
         this.cherry = 0
         
@@ -156,7 +157,7 @@ class Play extends Phaser.Scene {
             color: '#000000'
         }
 
-        this.scoreText = this.add.text(0, 0, 'SCORE:' + this.score, scoreConfig)
+        this.scoreText = this.add.text(0, 0, 'SCORE:' + score, scoreConfig)
         this.scoreText.setScrollFactor(0)
 
         //lives
@@ -175,7 +176,7 @@ class Play extends Phaser.Scene {
             console.log ('PLAYER: ' + this.player.x, this.player.y)
             console.log ('CHECKPOINT1: ' + this.point1.x, this.point1.y)
             console.log ('CHECKPOINT2: ' + this.point2.x, this.point2.y)
-            console.log ('SCORE: ' + this.score)
+            console.log ('SCORE: ' + score)
             this.sound.stopAll()
             this.scene.start('bossScene')
         }
@@ -233,10 +234,10 @@ class Play extends Phaser.Scene {
         }
 
         //check if got cherry
-        if (this.score < this.cherry){
+        if (score < this.cherry){
             if (this.cherried == true) {
-                this.score += 20
-                this.scoreText.setText('SCORE:' + this.score)
+                score += 20
+                this.scoreText.setText('SCORE:' + score)
             }
             this.cherries = false
         }

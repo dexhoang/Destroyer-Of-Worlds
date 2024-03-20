@@ -6,6 +6,7 @@ class Boss extends Phaser.Scene {
     create() {
         this.defeat = false
         this.targetup = false
+        this.targetHP = 0
 
         //this.sky = this.add.tileSprite(0, 0, 1000, 800, 'sky').setOrigin(0,0)
         this.sky = this.add.tileSprite(gameWidth/2, gameHeight/2, 1500, 830, 'sky')
@@ -149,14 +150,17 @@ class Boss extends Phaser.Scene {
             if (this.rando == 1) {
                 this.target.visible = true
                 this.targetup = true
+                this.targetHP = Math.floor(Math.random() * 7) + 1
             }
             else if (this.rando == 2) {
                 this.target2.visible = true
                 this.targetup = true
+                this.targetHP = Math.floor(Math.random() * 7) + 1
             }
             else if (this.rando == 3) {
                 this.target3.visible = true
                 this.targetup = true
+                this.targetHP = Math.floor(Math.random() * 7) + 1
             }
         }
 

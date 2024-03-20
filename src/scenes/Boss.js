@@ -5,8 +5,8 @@ class Boss extends Phaser.Scene {
 
     create() {
         this.defeat = false
-        this.targetup = false
         this.targetHP = 0
+        this.targetup = false
 
         //this.sky = this.add.tileSprite(0, 0, 1000, 800, 'sky').setOrigin(0,0)
         this.sky = this.add.tileSprite(gameWidth/2, gameHeight/2, 1500, 830, 'sky')
@@ -142,7 +142,9 @@ class Boss extends Phaser.Scene {
     update(time, delta) {
         if (this.bossHP == 0) {
             this.defeat = true
+            this.scene.start('titleScene')
         }
+
 
         if (!this.defeat && !this.targetup) {
             this.rando = Math.floor(Math.random() * 3) + 1
@@ -162,6 +164,7 @@ class Boss extends Phaser.Scene {
                 this.targetHP = Math.floor(Math.random() * 7) + 1
             }
         }
+
 
         this.playerFSM.step()
 
@@ -243,24 +246,42 @@ class Boss extends Phaser.Scene {
                 this.physics.add.overlap(this.burger, this.target, this.destroyBurger)
                 this.physics.add.overlap(this.burgerEffect, this.target, this.destroyEffect, () => {
                     this.bossHP -= 20
+                    this.targetHP -= 1
+                    console.log(this.targetHP)
                     console.log(this.bossHP)
                     this.setValue(this.bossBar, this.bossHP, 1000)
+                    if (this.targetHP == 0){
+                        this.target.visible = false
+                        this.targetup = false
+                    }
                 })
             }
             if (this.target2.visible == true) {
                 this.physics.add.overlap(this.burger, this.target2, this.destroyBurger)
                 this.physics.add.overlap(this.burgerEffect, this.target2, this.destroyEffect, () => {
                     this.bossHP -= 20
+                    this.targetHP -= 1
+                    console.log(this.targetHP)
                     console.log(this.bossHP)
                     this.setValue(this.bossBar, this.bossHP, 1000)
+                    if (this.targetHP == 0){
+                        this.target2.visible = false
+                        this.targetup = false
+                    }
                 })
             }
             if (this.target3.visible == true) {
                 this.physics.add.overlap(this.burger, this.target3, this.destroyBurger)
                 this.physics.add.overlap(this.burgerEffect, this.target3, this.destroyEffect, () => {
                     this.bossHP -= 20
+                    this.targetHP -= 1
+                    console.log(this.targetHP)
                     console.log(this.bossHP)
                     this.setValue(this.bossBar, this.bossHP, 1000)
+                    if (this.targetHP == 0){
+                        this.target3.visible = false
+                        this.targetup = false
+                    }
                 })
             }
 

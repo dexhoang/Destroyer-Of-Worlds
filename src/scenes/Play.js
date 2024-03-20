@@ -25,8 +25,7 @@ class Play extends Phaser.Scene {
         this.sky.fixedToCamera = true
 
         //background music 
-        this.sound.add('playMusic')
-        //this.sound.play('playMusic', {volume: 0.3})
+        this.sound.play('parkourMusic', {volume: 0.8})
 
         //add enemy
         this.boss = this.physics.add.sprite(-200, gameHeight/2 + 80, 'boss')
@@ -165,6 +164,7 @@ class Play extends Phaser.Scene {
         this.lifehead.setScrollFactor(0)
         this.livesLeft = this.add.text(885, 10, 'x ' + this.lives, scoreConfig)
         this.livesLeft.setScrollFactor(0)
+
     }
 
     update(time, delta) {
@@ -176,6 +176,7 @@ class Play extends Phaser.Scene {
             console.log ('CHECKPOINT1: ' + this.point1.x, this.point1.y)
             console.log ('CHECKPOINT2: ' + this.point2.x, this.point2.y)
             console.log ('SCORE: ' + this.score)
+            this.sound.stopAll()
             this.scene.start('bossScene')
         }
 
@@ -296,6 +297,7 @@ class Play extends Phaser.Scene {
                     this.hit = this.physics.add.sprite(this.b1.x, this.b1.y, 'target').setScale(3, 3)
                 }
             }
+            this.sound.stopAll()
             this.scene.start('bossScene')
         }
         
@@ -308,6 +310,7 @@ class Play extends Phaser.Scene {
         cherry.destroy()
         this.cherried = true
         this.cherry += 1000
+        this.sound.play('cherryPing')
     }
 
 }

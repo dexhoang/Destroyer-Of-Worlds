@@ -8,6 +8,9 @@ class Boss extends Phaser.Scene {
         this.targetHP = 0
         this.targetup = false
 
+        //background music 
+        this.sound.play('bossMusic', {volume: 0.8})
+
         //this.sky = this.add.tileSprite(0, 0, 1000, 800, 'sky').setOrigin(0,0)
         this.sky = this.add.tileSprite(gameWidth/2, gameHeight/2, 1500, 830, 'sky')
         this.sky.fixedToCamera = true

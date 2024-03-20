@@ -12,8 +12,8 @@ class Title extends Phaser.Scene {
         keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
 
         //bgMusic
-        this.sound.add('bgMusic')
-        //this.sound.play('bgMusic', {volume:0.3})
+        this.sound.stopAll()
+        this.sound.play('titleMusic', {volume:0.8})
         
         //create keys for option picking and sets option at start
         this.keys = this.input.keyboard.createCursorKeys()

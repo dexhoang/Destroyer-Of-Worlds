@@ -4,13 +4,15 @@ class Boss extends Phaser.Scene {
     }
 
     create() {
-        //this.sky = this.add.tileSprite(0, 0, 1000, 800, 'sky').setOrigin(0,0)
         this.sky = this.add.tileSprite(gameWidth/2, gameHeight/2, 1500, 830, 'sky')
         this.sky.fixedToCamera = true
+        this.sky.setScrollFactor(0)
+        this.sky.setPosition.X = this.game.fixedToCamera
         const map = this.add.tilemap('tilemapJSON1')
         const tileset = map.addTilesetImage('tileset', 'tilesetImage')
         const bgLayer = map.createLayer('Background', tileset, 0, 1)
         this.cameras.main.setZoom(0.85)
+        this.cameras.main.setScroll(0, 250)
         
 
         this.spawn = map.findObject('Points', (obj) => obj.name === 'spawn')
@@ -39,20 +41,18 @@ class Boss extends Phaser.Scene {
 
         //sets time for burger reload
         this.timeSince = 0
-
-        this.cameras.main.setBounds(100, -125, map.widthInPixels, map.heightInPixels)
         //this.cameras.main.startFollow(this.player, true, 0.25, 0.25)
 
         bgLayer.setCollisionByProperty({collides: true})
         this.physics.add.collider(this.player, bgLayer)
-
-        this.physics.world.bounds.width = 1205
 
         this.target = this.physics.add.sprite(gameWidth/2 - 300, gameHeight/2 - 20, 'target').setScale(7).setCircle(11.75).setOffset(5.75, 5.7)
         this.target2 = this.physics.add.sprite(gameWidth/2 - 230, gameHeight/2 + 135, 'target').setScale(4).setCircle(11.75).setOffset(6, 5.6)
         this.target3 = this.physics.add.sprite(gameWidth/2 - 220, gameHeight/2 - 165, 'target').setScale(4).setCircle(11.5).setOffset(6, 5.6)
         this.target.setTint(0xffffff)
         
+        this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
+        this.cameras.main.setBounds(100, 0, map.widthInPixels, map.heightInPixels)
 
         //shoots fireballs at player
         function shootFireball() {
@@ -61,6 +61,14 @@ class Boss extends Phaser.Scene {
             this.convertAngle = Phaser.Math.RadToDeg(this.fireballAngle)
             this.physics.moveTo(this.fireball, this.player.x, this.player.y, 500)
             this.fireball.setRotation(this.fireballAngle)
+            this.physics.add.overlap(this.fireball, this.player, (fireball, player) => {
+                fireball.destroy()
+                this.sound.play('fireballHit')
+            })
+
+            if (this.fireball.x > 1000) {
+                this.fireball.destroy()
+            }
 
             this.sound.play('fireballSound', {volume: 0.3})
         }
@@ -71,6 +79,14 @@ class Boss extends Phaser.Scene {
             this.convertAngle = Phaser.Math.RadToDeg(this.fireballAngle)
             this.physics.moveTo(this.fireball, this.player.x, this.player.y, 500)
             this.fireball.setRotation(this.fireballAngle)
+            this.physics.add.overlap(this.fireball, this.player, (fireball, player) => {
+                fireball.destroy()
+                this.sound.play('fireballHit')
+            })
+
+            if (this.fireball.x > 1000) {
+                this.fireball.destroy()
+            }
 
             this.sound.play('fireballSound', {volume: 0.3})
         }
@@ -89,6 +105,7 @@ class Boss extends Phaser.Scene {
             callbackScope: this,
             loop: true
         })
+
 
         //'animate' boss movement
         this.bossTween = this.tweens.add({
